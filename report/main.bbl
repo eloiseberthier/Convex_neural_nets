@@ -1,0 +1,46 @@
+\begin{thebibliography}{}
+
+\bibitem[Bach, 2017]{bach2017breaking}
+Bach, F. (2017).
+\newblock Breaking the curse of dimensionality with convex neural networks.
+\newblock {\em Journal of Machine Learning Research}, 18(19):1--53.
+
+\bibitem[Bengio et~al., 2006]{bengio2006convex}
+Bengio, Y., Roux, N.~L., Vincent, P., Delalleau, O., and Marcotte, P. (2006).
+\newblock Convex neural networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  123--130.
+
+\bibitem[Chizat and Bach, 2018]{chizat2018global}
+Chizat, L. and Bach, F. (2018).
+\newblock On the global convergence of gradient descent for over-parameterized
+  models using optimal transport.
+\newblock {\em arXiv preprint arXiv:1805.09545}.
+
+\bibitem[Du et~al., 2018a]{du2018bgradient}
+Du, S.~S., Lee, J.~D., Li, H., Wang, L., and Zhai, X. (2018a).
+\newblock Gradient descent finds global minima of deep neural networks.
+\newblock {\em arXiv preprint arXiv:1811.03804}.
+
+\bibitem[Du et~al., 2018b]{du2018agradient}
+Du, S.~S., Zhai, X., Poczos, B., and Singh, A. (2018b).
+\newblock Gradient descent provably optimizes over-parameterized neural
+  networks.
+\newblock {\em arXiv preprint arXiv:1810.02054}.
+
+\bibitem[Haeffele and Vidal, 2017]{haeffele2017global}
+Haeffele, B.~D. and Vidal, R. (2017).
+\newblock Global optimality in neural network training.
+
+\bibitem[Zhang et~al., 2016]{zhang2016convexified}
+Zhang, Y., Liang, P., and Wainwright, M.~J. (2016).
+\newblock Convexified convolutional neural networks.
+\newblock {\em arXiv preprint arXiv:1609.01000}.
+
+\bibitem[Zou et~al., 2018]{zou2018stochastic}
+Zou, D., Cao, Y., Zhou, D., and Gu, Q. (2018).
+\newblock Stochastic gradient descent optimizes over-parameterized deep relu
+  networks.
+\newblock {\em arXiv preprint arXiv:1811.08888}.
+
+\end{thebibliography}
