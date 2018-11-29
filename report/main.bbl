@@ -32,6 +32,11 @@ Du, S.~S., Zhai, X., Poczos, B., and Singh, A. (2018b).
 Haeffele, B.~D. and Vidal, R. (2017).
 \newblock Global optimality in neural network training.
 
+\bibitem[Li et~al., 2018]{visualloss}
+Li, H., Xu, Z., Taylor, G., Studer, C., and Goldstein, T. (2018).
+\newblock Visualizing the loss landscape of neural nets.
+\newblock In {\em Neural Information Processing Systems}.
+
 \bibitem[Zhang et~al., 2016]{zhang2016convexified}
 Zhang, Y., Liang, P., and Wainwright, M.~J. (2016).
 \newblock Convexified convolutional neural networks.
