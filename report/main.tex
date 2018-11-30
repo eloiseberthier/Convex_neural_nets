@@ -85,20 +85,33 @@ Looking at all these different approaches, we may notice some recurrent patterns
 
 \begin{itemize}
 \item \textit{one hidden-layer models}: most of the articles focus on simple neural network models, that already include a wide variety of classical supervised learning configurations, but do not directly cover deep neural networks.
-\item \textit{over parametrization}: all the good generalization properties are derived in the case of an over parametrizing model, yet the key question is \textit{how much} over parametrization is needed.
+\item \textit{over parametrization}: all the good generalization properties are derived in the case of an over parametrized model, yet the key question is \textit{how much} over parametrization is needed.
 \item \textit{positive homogeneity}: most of the results are achieved in the case of positively homogeneous activation functions. It could explain the experimental advantage of using ReLU functions over others in deep learning.
 \item \textit{proper initialization}: several articles rely on the conservation of an initial regularity through the optimizing process, for instance using gradient flows, and so emphasize the role of the initialization.
 \end{itemize}
 
 \section{Defining a Convex Problem}
 
-non convex problem
+\subsection{General layout}
+
+We consider single hidden-layer neural networks. It defines a class of prediction functions on $\mathbb{R}^d$ parametrized as: $f(x) =\sum_{j=1}^k \eta_j \sigma(w_j^T x + b_j)$, where $\sigma$ is a fixed activation function, $k$ is the number of hidden units, and the $(\eta_j)_{j=1,...,k}$ are the weights of the output layer.\\
+
+
+sigma positive homogeneous \\
+
+\subsection{From non-convexity to convexity}
+
+For a fixed value of $k$, training a neural network is an empirical risk minimization problem: $\min_{\eta, w, b} \frac{1}{n} \sum_{i=1}^n \ell(f(x_i), y_i) + \Omega(\eta, w, b)$, where $\ell$ is a smooth convex loss function and $\Omega$ a convex regularization function.
+
+--> non convex problem\\
 
 the convex problem
 
+Penalization L1 / L2 sampling.
+
 number of hidden units
 
-sample complexity
+sample complexity / curse of dimensionality
 
 \section{Theoretical Analysis}
 
