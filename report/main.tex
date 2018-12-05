@@ -36,6 +36,11 @@
 %\chead{\today}
 %\rhead{Eloïse \textsc{Berthier}}
 
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
 \title{On Convex Neural Networks}
 \author{Eloïse Berthier}
 \date{\today}
@@ -67,19 +72,21 @@ While the use of neural networks has dramatically increased the performance of s
 
 Yet in practice, training large neural networks often results in satisfying solutions, which are empirically considered \textit{not too far} from a global minimum. Thus it suggests that there may be some implicit assumptions on the data or on the model that are usually verified and could explain this regularity, somehow making the problem \textit{more convex} than at first sight.\\
 
-There have been several attempts to study this phenomenon, heading in different directions.
+There have been several attempts to study this phenomenon, heading in different directions. Here are some examples.
 
-Some rely on convex relaxations of the original optimization problem. \cite{zhang2016convexified} defines a convex relaxation for training convolutional neural networks. They show that in the case of a two-layer CNN, the generalization error of the solution to the convex relaxed problem converges to that of the best possible two-layer CNN.
+Some rely on convex relaxations of the original optimization problem. \cite{zhang2016convexified} define a convex relaxation for training convolutional neural networks. They show that in the case of a two-layer CNN, the generalization error of the solution to the convex relaxed problem converges to that of the best possible two-layer CNN.
 
-In \cite{haeffele2017global} are studied conditions under which the optimization landscape for the non-convex optimization problem is such that all critical points are either global minimizers or saddle points. \cite{visualloss} provides a tool to visualize the loss surface along random directions near the optimal parameters.
+In \cite{haeffele2017global} are studied conditions under which the optimization landscape for the non-convex optimization problem is such that all critical points are either global minimizers or saddle points. \cite{visualloss} provide a tool to visualize the loss surface along random directions near the optimal parameters.
 
-There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.\\
+There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
+
+In the infinite-width limit, \cite{jacot2018neural} show that the evolution of a neural network function is related to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and they show that it is the case when the data are on a sphere.\\
 
 In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
 
 Of course, while this approach solves the non-convexity issue, it introduces some other difficulties. These are extensively studied in \cite{bach2017breaking}, on which we will mainly focus in this report. A complete analysis of the generalization performance of convex neural networks is derived, in particular showing that high-dimensional non-linear variable selection may be achieved, without any strong assumption regarding the data. Yet this approach requires to solve a convex problem in infinite dimension and is only possible if the non-convex subproblem of adding a new hidden unit can be solved efficiently. Finding a polynomial-time algorithm solving this subproblem induced by the conditional gradient method is still an open question.
 
-\cite{chizat2018global} focuses on solving the same convex problem, but avoids the potentially NP-hard problem of optimizing with conditional gradient. Instead, they discretize the unknown measure as a mixture of particles. This approach is inspired by optimal transport and brings strong asymptotical global optimality garantees for gradient flow optimization. It also provides simple numerical experiments.\\
+\cite{chizat2018global} focus on solving the same convex problem, but avoid the potentially NP-hard problem of optimizing with conditional gradient. Instead, they discretize the unknown measure as a mixture of particles. This approach is inspired by optimal transport and brings strong asymptotical global optimality guarantees for gradient flow optimization. It also provides simple numerical experiments.\\
 
 Looking at all these different approaches, we may notice some recurrent patterns in the assumptions that are commonly made:
 
@@ -90,22 +97,91 @@ Looking at all these different approaches, we may notice some recurrent patterns
 \item \textit{proper initialization}: several articles rely on the conservation of an initial regularity through the optimizing process, for instance using gradient flows, and so emphasize the role of the initialization.
 \end{itemize}
 
-\section{Defining a Convex Problem}
+\section{Toward a Convex Problem}
 
 \subsection{General layout}
 
-We consider single hidden-layer neural networks. It defines a class of prediction functions on $\mathbb{R}^d$ parametrized as: $f(x) =\sum_{j=1}^k \eta_j \sigma(w_j^T x + b_j)$, where $\sigma$ is a fixed activation function, $k$ is the number of hidden units, and the $(\eta_j)_{j=1,...,k}$ are the weights of the output layer.\\
+We consider single hidden-layer neural networks. It defines a class of prediction functions on $\mathbb{R}^d$ parametrized as: $f_{\eta, b, v}(x) =\sum_{j=1}^k \eta_j \sigma(v_j^T x + b_j)$, where $\sigma$ is a fixed activation function, $k$ is the number of hidden units, $v_j$ and $b_j$ are the weight and bias of layer $j$ and $(\eta_j)_{j=1,...,k}$ the weights of the output layer. We can eliminate the $b_j$ by integrating it into $v_j$ and adding a one on top of $x$.\\
 
-
-sigma positive homogeneous \\
+We will mainly consider a fixed non-decreasing and positively homogeneous  activation function of some integer degree, i.e. $\sigma(u) = (u)^\alpha_+$, for some $\alpha \in \mathbb{N}$ (it includes ReLU and hard-thresolding functions). We will also later consider sigmoid activation functions in the numerical experiments.
 
 \subsection{From non-convexity to convexity}
 
-For a fixed value of $k$, training a neural network is an empirical risk minimization problem: $\min_{\eta, w, b} \frac{1}{n} \sum_{i=1}^n \ell(f(x_i), y_i) + \Omega(\eta, w, b)$, where $\ell$ is a smooth convex loss function and $\Omega$ a convex regularization function.
+For a fixed value of $k$, training a neural network is an empirical risk minimization problem: $\min_{\eta, v} \frac{1}{n} \sum_{i=1}^n \ell(f_{\eta, v}(x_i), y_i) + \Omega(\eta, v)$, where $\ell$ is a smooth convex loss function (convex in its first argument) and $\Omega$ a convex regularization function, and $(x_i, y_i)$ the observations in $\mathcal{X} \times \mathbb{R}$. This is not a convex problem because of the non-convexity of the prediction function.\\
 
---> non convex problem\\
+Now consider the set $\mathcal{F}_\mathcal{V}$ of all the possible hidden unit functions $\varphi_v : \mathcal{X} \rightarrow \mathbb{R}$, with $\mathcal{X}$ any measurable space. We will call it the set of basis functions. It is parametrized by the compact topological space $\mathcal{V}$ of all possible hidden unit weight vectors. We assume that for all $x \in \mathcal{X}$, the functions $v \mapsto \varphi_v(x)$ are continuous. To represent any affine function, $\mathcal{V}$ has dimension $d + 1$ for inputs in $\mathcal{X}$ of dimension $d$.
 
-the convex problem
+Let $\mathcal{W}$ be the Hilbert space of functions from $\mathcal{F}_\mathcal{V}$ to $\mathbb{R}$, with $\cdot$ an inner product. For any $x \in \mathcal{X}$, we define $h(x)$ as the function that maps any $\varphi_v \in \mathcal{F}_\mathcal{V}$ to $\varphi_v(x)$. $h(x)$ is an element of $\mathcal{W}$. $h(x)$ can be seen as the vector of activations of the hidden units when we observe $x$ as input. An element $\eta$ of $\mathcal{W}$ can also be understood as the output weights vector in a neural network. We extend the definition of $\Omega$ to be a convex regularization functional from $\mathcal{W}$ to $\mathbb{R}$.  \\
+
+We can define the following problem:
+\begin{equation}
+\min_{\eta \in \mathcal{W}} \mathcal{C}(\eta) = \frac{1}{n} \sum_{i=1}^n \ell(\eta \cdot h(x_i), y_i) + \Omega(\eta)
+\end{equation}
+
+\begin{lemma}
+Problem (1) is a convex minimization problem.
+\end{lemma}
+The proof is straightforward: any Hilbert space $\mathcal{W}$ is convex, $ \ell(\eta \cdot \varphi(x_i), y_i)$ is convex in $\eta$ and by additivity the objective function also is.\\
+
+This problem formulation is from \cite{bengio2006convex}. It is a bit hard to handle as it introduces many notations that are not all explicit. Still it provides an intuitive idea of the problem we want to define: considering all the possible hidden units we could pick, how to combine them to make a good prediction, that is, how to choose the output weight $\eta$ to minimize $\mathcal{C}$. 
+
+In this problem the penalization term is crucial. Unlike the initial optimization problem where the number of hidden units was fixed, it is now part of the optimization problem. Without any regularization, the solution could have an arbitrary large number (possibly infinite) of non-zero variables $\eta_j$. We will later see that a proper regularization can ensure a finite number of selected units, and so a finite model.
+
+$\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it is a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $\eta$. Notice that due to these notations, this formulation could hardly be generalized to a greater number of layers.\\
+
+For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, which defines two spaces $\mathcal{F}^1$ and $\mathcal{F}^2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}^1$ or $\mathcal{F}^2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $\eta$.
+
+\subsection{Variation norm}
+
+To properly define $\mathcal{F}^1$, we have to introduce Radon measures.
+
+\begin{definition}
+Real-valued Radon measures are continuous linear forms on the space of continuous functions from $\mathcal{V}$ to $\mathbb{R}$, equipped with the uniform norm.
+\end{definition}
+
+The total variation norm $|\mu|(\mathcal{V})$ of a Radon measure $\mu$  is equal to the supremum of $\int_\mathcal{V} g(v)\textnormal{d}\mu(v)$, over all continuous functions $g$ with values in $[-1, 1]$. When $\mu$ has a density with respect to a fixed probability measure $\tau$, ${d}\mu(v) = p(v) {d}\tau(v)$, then this is the $L^1$ norm of this density: $$|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$$
+When the measure is discrete, that is $\mu = \sum_{j=1}^k \eta_j \delta_{v_j}$ the total variation of $\mu$ is the $\ell^1$-norm of $\eta$:
+$$|\mu|(\mathcal{V}) = \sum_{j=1}^k |\eta_j|  $$
+
+\begin{definition}
+$\mathcal{F}_1$ is the space of functions $f$ that can be written as
+$f(x)= \int_\mathcal{V} \varphi_v(x)\textnormal{d}\mu(v)$,
+where $\mu$ is a signed Radon measure on $\mathcal{V}$ with finite total variation.
+\end{definition}
+
+\begin{definition}
+The variation norm of $f \in \mathcal{F}_1$ with respect to $\mathcal{V}$ is the infimum of $|\mu|(\mathcal{V})$ over all decompositions of $f$ as $f= \int_\mathcal{V} \varphi_v\textnormal{d}\mu(v)$. It is a norm $\gamma_1$ on $\mathcal{F}_1$.
+\end{definition}
+
+If we assume in this definition that $\mu$ must have a density with respect to $\tau$ with full support on $\mathcal{V}$, then $\gamma_1(f)$ is the infimum of $|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$ over all integrable functions $p$ such that $f(x) = \int_\mathcal{V} p(v) \varphi_v(x)\textnormal{d}\tau(v)$. This defines the same norm $\gamma_1(f)$ because all Radon measures are limits of measures with densities.\\
+
+If $f$ has a finite number of neurons, $f(x) = \sum_{j=1}^k \eta_j \varphi_{v_j}(x)$, the infimum is attained when $\mu$ is a mixture of $k$ Diracs at $v_j$ with weights $\eta_j$, and then $\gamma_1(f) = ||\eta||_1$. The variation norm of $f$ controls the $\ell^1$ norm of the output weights, so it could be used as a penalization term. Instead, we will rather express it as a constraint over the space of admissible $f$, which is equivalent up to a constant.
+
+\subsection{Problem formulation in $\mathcal{F}^1$}
+
+We define the convex problem of minimizing a functional $J$ on functions restricted to $\mathcal{\hat X}$ a subset of $\mathcal{X}$, that is:
+\begin{equation}
+\min_{f_{|\mathcal{\hat X}} \in \mathbb{R}^\mathcal{\hat X}~ s.t. ~ \gamma_{1|\mathcal{\hat X}} (f_{|\mathcal{\hat X}}) \leq \delta} J(f_{|\mathcal{\hat X}})
+\end{equation}
+where $\gamma_{1|\mathcal{\hat X}} (f_{|\mathcal{\hat X}})$ is the infimum of the total variation of a measure over the decompositions defined for $f_{|\mathcal{\hat X}}$ instead of $f$.\\
+
+This subset will typically be a finite set of observations $x_1,...,x_n$ among a potentially infinite set $\mathcal{X}$. With this penalization, the empirical risk minimization problem is well represented: $J$ measures the quality of the fit to the observations, and the constraint controls the complexity of the model. Note that solving this optimization problem provides an optimal measure $\mu$ and a decomposition of $f_{|\mathcal{\hat X}}$, and thus also gives an expression for $f$ by extending this decomposition to any $x\in \mathcal{X}$. \\
+
+The following result highlights the role of controling the variation norm.
+
+\begin{theorem}{\emph{[From Carathéodory's theorem for cones]}} If $\mathcal{\hat X}$ has only $n$ elements, the solution $f$ to problem (2) may be decomposed into at most $n$ functions $\varphi_v$, that is, $\mu$ is supported by at most $n$ points of $\mathcal{V}$ in the expression: $$ f(x) = \int_\mathcal{V} \varphi_v(x) \textnormal{d}\mu(v) $$
+\end{theorem}
+
+However, we do not know in advance which will be these $n$ functions, whereas if we consider the representer theorem for RKHS, the functions are known to be kernels centered in the observations.
+
+
+\subsection{Problem formulation in $\mathcal{F}^2$}
+
+RKHS and random sampling
+
+\subsection{Learning from basis functions}
+
+Frank Wolfe
 
 Penalization L1 / L2 sampling.
 

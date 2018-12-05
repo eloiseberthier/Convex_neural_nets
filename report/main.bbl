@@ -32,6 +32,12 @@ Du, S.~S., Zhai, X., Poczos, B., and Singh, A. (2018b).
 Haeffele, B.~D. and Vidal, R. (2017).
 \newblock Global optimality in neural network training.
 
+\bibitem[Jacot et~al., 2018]{jacot2018neural}
+Jacot, A., Gabriel, F., and Hongler, C. (2018).
+\newblock Neural tangent kernel: Convergence and generalization in neural
+  networks.
+\newblock {\em arXiv preprint arXiv:1806.07572}.
+
 \bibitem[Li et~al., 2018]{visualloss}
 Li, H., Xu, Z., Taylor, G., Studer, C., and Goldstein, T. (2018).
 \newblock Visualizing the loss landscape of neural nets.
