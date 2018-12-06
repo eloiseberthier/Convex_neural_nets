@@ -38,6 +38,11 @@ Jacot, A., Gabriel, F., and Hongler, C. (2018).
   networks.
 \newblock {\em arXiv preprint arXiv:1806.07572}.
 
+\bibitem[Le~Roux and Bengio, 2007]{le2007continuous}
+Le~Roux, N. and Bengio, Y. (2007).
+\newblock Continuous neural networks.
+\newblock In {\em Artificial Intelligence and Statistics}, pages 404--411.
+
 \bibitem[Li et~al., 2018]{visualloss}
 Li, H., Xu, Z., Taylor, G., Studer, C., and Goldstein, T. (2018).
 \newblock Visualizing the loss landscape of neural nets.

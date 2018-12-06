@@ -5,14 +5,11 @@
 \BOOKMARK [2][-]{subsection.2.3}{Variation norm}{section.2}% 5
 \BOOKMARK [2][-]{subsection.2.4}{Problem formulation in F1}{section.2}% 6
 \BOOKMARK [2][-]{subsection.2.5}{Problem formulation in F2}{section.2}% 7
-\BOOKMARK [2][-]{subsection.2.6}{Learning from basis functions}{section.2}% 8
-\BOOKMARK [1][-]{section.3}{Theoretical Analysis}{}% 9
-\BOOKMARK [2][-]{subsection.3.1}{Errors decomposition}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.2}{Approxmiation error ?}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.3}{Generalization error}{section.3}% 12
-\BOOKMARK [1][-]{section.4}{An Optimization Problem}{}% 13
-\BOOKMARK [2][-]{subsection.4.1}{Frank Wolfe}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.2}{NP hard}{section.4}% 15
-\BOOKMARK [1][-]{section.5}{The Particle Gradient Flow Approach}{}% 16
-\BOOKMARK [1][-]{section.6}{Numerical Experiments}{}% 17
-\BOOKMARK [1][-]{section.7}{Conclusion and perspectives}{}% 18
+\BOOKMARK [1][-]{section.3}{Theoretical Analysis of errors}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Errors decomposition}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Generalization error}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{An Optimization Problem}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{Frank Wolfe / Learning from basis functions}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.2}{The Particle Gradient Flow Approach}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 14
+\BOOKMARK [1][-]{section.6}{Conclusion and perspectives}{}% 15

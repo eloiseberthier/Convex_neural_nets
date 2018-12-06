@@ -38,6 +38,7 @@
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
 
@@ -80,7 +81,7 @@ In \cite{haeffele2017global} are studied conditions under which the optimization
 
 There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
 
-In the infinite-width limit, \cite{jacot2018neural} show that the evolution of a neural network function is related to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and they show that it is the case when the data are on a sphere.\\
+In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data are on a sphere.\\
 
 In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
 
@@ -129,11 +130,11 @@ In this problem the penalization term is crucial. Unlike the initial optimizatio
 
 $\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it is a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $\eta$. Notice that due to these notations, this formulation could hardly be generalized to a greater number of layers.\\
 
-For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, which defines two spaces $\mathcal{F}^1$ and $\mathcal{F}^2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}^1$ or $\mathcal{F}^2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $\eta$.
+For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, which defines two spaces $\mathcal{F}_1$ and $\mathcal{F}_2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}_1$ or $\mathcal{F}_2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $\eta$.
 
 \subsection{Variation norm}
 
-To properly define $\mathcal{F}^1$, we have to introduce Radon measures.
+To properly define $\mathcal{F}_1$, we have to introduce Radon measures.
 
 \begin{definition}
 Real-valued Radon measures are continuous linear forms on the space of continuous functions from $\mathcal{V}$ to $\mathbb{R}$, equipped with the uniform norm.
@@ -153,11 +154,11 @@ where $\mu$ is a signed Radon measure on $\mathcal{V}$ with finite total variati
 The variation norm of $f \in \mathcal{F}_1$ with respect to $\mathcal{V}$ is the infimum of $|\mu|(\mathcal{V})$ over all decompositions of $f$ as $f= \int_\mathcal{V} \varphi_v\textnormal{d}\mu(v)$. It is a norm $\gamma_1$ on $\mathcal{F}_1$.
 \end{definition}
 
-If we assume in this definition that $\mu$ must have a density with respect to $\tau$ with full support on $\mathcal{V}$, then $\gamma_1(f)$ is the infimum of $|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$ over all integrable functions $p$ such that $f(x) = \int_\mathcal{V} p(v) \varphi_v(x)\textnormal{d}\tau(v)$. This defines the same norm $\gamma_1(f)$ because all Radon measures are limits of measures with densities.\\
+If we assume in this definition that $\mu$ must have a density with respect to $\tau$ with full support on $\mathcal{V}$, then $\gamma_1(f)$ is the infimum of $|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$ over all integrable functions $p$ such that $f(x) = \int_\mathcal{V} p(v) \varphi_v(x)\textnormal{d}\tau(v)$. This defines the same norm $\gamma_1(f)$ because all Radon measures are limits of measures with densities.
 
-If $f$ has a finite number of neurons, $f(x) = \sum_{j=1}^k \eta_j \varphi_{v_j}(x)$, the infimum is attained when $\mu$ is a mixture of $k$ Diracs at $v_j$ with weights $\eta_j$, and then $\gamma_1(f) = ||\eta||_1$. The variation norm of $f$ controls the $\ell^1$ norm of the output weights, so it could be used as a penalization term. Instead, we will rather express it as a constraint over the space of admissible $f$, which is equivalent up to a constant.
+If $f$ has a finite number of neurons, $f(x) = \sum_{j=1}^k \eta_j \varphi_{v_j}(x)$, the infimum is attained when $\mu$ is a mixture of $k$ Diracs at $v_j$ with weights $\eta_j$, and then $\gamma_1(f) = ||\eta||_1$. The variation norm of $f$ controls the $\ell^1$ norm of the output weights, so it could be used as a penalization term. We will rather express it as a constraint over the space of admissible $f$, which is equivalent up to a constant.
 
-\subsection{Problem formulation in $\mathcal{F}^1$}
+\subsection{Problem formulation in $\mathcal{F}_1$}
 
 We define the convex problem of minimizing a functional $J$ on functions restricted to $\mathcal{\hat X}$ a subset of $\mathcal{X}$, that is:
 \begin{equation}
@@ -175,42 +176,74 @@ The following result highlights the role of controling the variation norm.
 However, we do not know in advance which will be these $n$ functions, whereas if we consider the representer theorem for RKHS, the functions are known to be kernels centered in the observations.
 
 
-\subsection{Problem formulation in $\mathcal{F}^2$}
+\subsection{Problem formulation in $\mathcal{F}_2$}
 
-RKHS and random sampling
+Following the previous results, we may define another space of functions $\mathcal{F}_2$ that has a reproducing property. \\
 
-\subsection{Learning from basis functions}
+We previously noticed that in the definition of the variation norm, the infimum over measures could also be taken over densities with respect to a base measure, hence we could minimize $|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$ over all integrable functions $p$ such that $f(x) = \int_\mathcal{V} p(v) \varphi_v(x)\textnormal{d}\tau(v)$. Instead of taking the $L^1$ norm of the densities, we may consider the infimum of their $L^2$ norm $\int_\mathcal{V} |p(v)|^2 \textnormal{d}\tau(v)$ over all decompositions of $f$. It defines a squared norm $\gamma_2^2$.
 
-Frank Wolfe
 
-Penalization L1 / L2 sampling.
+\begin{proposition}
+If $\mathcal{V}$ is compact, the space $\mathcal{F}_2$ of functions with finite $\gamma_2$ norm is a reproducing kernel Hilbert space (RKHS), with positive definite kernel $k(x,y)=\int_\mathcal{V} \varphi_v(x) \varphi_v(y) \textnormal{d}\tau(v)$.
+\end{proposition}
 
-number of hidden units
+The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by sampling $m$ i.i.d hidden units $v_1,...,v_m$ and learning a function of the form $\frac{1}{m} \sum_{j=1}^m \eta_j \varphi_{v_j}(x)$ with a penalization on the $\ell^2$ norm of $\eta$. When $m$ tends to infinity, the approximate kernel $\hat k(x,y) = \sum_{j=1}^m \varphi_{v_j}(x) \varphi_{v_j}(y)$ tends to $k(x,y)$.
 
-sample complexity / curse of dimensionality
+\cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similars results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not possible in $\mathcal{F}_1$. 
 
-\section{Theoretical Analysis}
+\section{Theoretical Analysis of errors}
+
+nbr of units / sample complexity / curse of dimensionality
+
+Sample complexity is exponential in dimension if only assume lispchitz continuous (curse of dimensionality). Adding some structure: gets polynomial. We would like 1 HL Neural networks to adapt to these structures. Generalization properties: adaptivity to structure and variable selection, assuming f* has a simpler expression.
+
+Problem 4: Empirical risk minimization (cf video) min 1/n sum l(f(xi), yi) st gamma1(f)<delta or gamma2(f)
 
 \subsection{Errors decomposition}
+
 3 errors decomposition.
-Speak about the last two
 
-\subsection{Approxmiation error ?}
-
+approximation + estimation + optimization.
+Leave the last one for part 4.
 
 \subsection{Generalization error}
 
+Generalization error = approximation error + estimation error
+
+1) estimation: rademacher analysis for uniform deviations (...) O(delta/sqrt n)
+
+2) approximation: gamm1 <= gamma2 donc F1 inclus dans F2
+
+smoothness asumptions -> appartenance a F1/F2. 
+gamma1 and gamma2 exist under smoothness asumptions Approximations par fonctions avec gamma < delta, bound depend de d. proof with spherical harmonics.
+
+Adaptivity: can we do better when subspace s, replace d par s? -> the difference between F1 and F2. 
+approximation errors for lipschitz continuous gives bounds. Function of d. Only adaptive for F1 and not F2.
+Reason: F2 inclus dans F1. Too small, lack of adaptivity.
+Only learning smooth functions, allow singularity with l1. l2 is too small.
+l1 performs selection on hidden units, induces sparsity. Not l2. For instance cannot put diracs in l2 (à préciser).
+
+Conclusion: F1 is good, F2 not enough
 
 \section{An Optimization Problem}
 
-\subsection{Frank Wolfe}
+Optimizing in F1 is hard...
 
-\subsection{NP hard}
+\subsection{Frank Wolfe /  Learning from basis functions}
 
+Frank Wolfe / conditional gradient.
 
-\section{The Particle Gradient Flow Approach}
+Barron: one way to provide a finite decomposition of functions in F1 with error epsilon and control on the number of neurons depending on gamma1. -> Using FW.
 
-A more general result, can be applied to this problem
+Bail des zonotopes donne une meilleure borne sur le nombre de neurones ?
+
+Link to NP hard problems.
+
+Open problems.
+
+\subsection{The Particle Gradient Flow Approach}
+
+A more general result, can be applied to this problem. Tackle an optimization problem and provide global convergence guarantees.
 
 \section{Numerical Experiments}
 
