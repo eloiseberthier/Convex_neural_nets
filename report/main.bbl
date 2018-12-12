@@ -11,8 +11,13 @@ Bengio, Y., Roux, N.~L., Vincent, P., Delalleau, O., and Marcotte, P. (2006).
 \newblock In {\em Advances in neural information processing systems}, pages
   123--130.
 
-\bibitem[Chizat and Bach, 2018]{chizat2018global}
-Chizat, L. and Bach, F. (2018).
+\bibitem[Chizat and Bach, 2018a]{chizat:hal-01945578}
+Chizat, L. and Bach, F. (2018a).
+\newblock {A Note on Lazy Training in Supervised Differentiable Programming}.
+\newblock working paper or preprint.
+
+\bibitem[Chizat and Bach, 2018b]{chizat2018global}
+Chizat, L. and Bach, F. (2018b).
 \newblock On the global convergence of gradient descent for over-parameterized
   models using optimal transport.
 \newblock {\em arXiv preprint arXiv:1805.09545}.

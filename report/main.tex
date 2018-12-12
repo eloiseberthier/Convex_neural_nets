@@ -79,7 +79,7 @@ Some rely on convex relaxations of the original optimization problem. \cite{zhan
 
 In \cite{haeffele2017global} are studied conditions under which the optimization landscape for the non-convex optimization problem is such that all critical points are either global minimizers or saddle points. \cite{visualloss} provide a tool to visualize the loss surface along random directions near the optimal parameters.
 
-There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
+There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data are \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
 
 In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data are on a sphere.\\
 
@@ -98,11 +98,11 @@ Looking at all these different approaches, we may notice some recurrent patterns
 \item \textit{proper initialization}: several articles rely on the conservation of an initial regularity through the optimizing process, for instance using gradient flows, and so emphasize the role of the initialization.
 \end{itemize}
 
-\section{Toward a Convex Problem}
+\section{Towards a Convex Problem}
 
 \subsection{General layout}
 
-We consider single hidden-layer neural networks. It defines a class of prediction functions on $\mathbb{R}^d$ parametrized as: $f_{\eta, b, v}(x) =\sum_{j=1}^k \eta_j \sigma(v_j^T x + b_j)$, where $\sigma$ is a fixed activation function, $k$ is the number of hidden units, $v_j$ and $b_j$ are the weight and bias of layer $j$ and $(\eta_j)_{j=1,...,k}$ the weights of the output layer. We can eliminate the $b_j$ by integrating it into $v_j$ and adding a one on top of $x$.\\
+We consider single hidden-layer neural networks. It defines a class of prediction functions on $\mathbb{R}^d$ parametrized as: $f_{\eta, b, v}(x) =\sum_{j=1}^k \eta_j \sigma(v_j^\top x + b_j)$, where $\sigma$ is a fixed activation function, $k$ is the number of hidden units, $v_j$ and $b_j$ are the weight and bias of layer $j$ and $(\eta_j)_{j=1,...,k}$ the weights of the output layer. We can eliminate the $b_j$ by integrating it into $v_j$ and adding a one on top of $x$.\\
 
 We will mainly consider a fixed non-decreasing and positively homogeneous  activation function of some integer degree, i.e. $\sigma(u) = (u)^\alpha_+$, for some $\alpha \in \mathbb{N}$ (it includes ReLU and hard-thresolding functions). We will also later consider sigmoid activation functions in the numerical experiments.
 
@@ -128,7 +128,7 @@ This problem formulation is from \cite{bengio2006convex}. It is a bit hard to ha
 
 In this problem the penalization term is crucial. Unlike the initial optimization problem where the number of hidden units was fixed, it is now part of the optimization problem. Without any regularization, the solution could have an arbitrary large number (possibly infinite) of non-zero variables $\eta_j$. We will later see that a proper regularization can ensure a finite number of selected units, and so a finite model.
 
-$\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it is a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $\eta$. Notice that due to these notations, this formulation could hardly be generalized to a greater number of layers.\\
+$\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $\eta$. Notice that due to these notations, this formulation could hardly be generalized to a greater number of layers.\\
 
 For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, which defines two spaces $\mathcal{F}_1$ and $\mathcal{F}_2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}_1$ or $\mathcal{F}_2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $\eta$.
 
@@ -191,39 +191,62 @@ The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by samp
 
 \cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similars results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not possible in $\mathcal{F}_1$. 
 
-\section{Theoretical Analysis of errors}
+\section{Theoretical Analysis}
 
-nbr of units / sample complexity / curse of dimensionality
+\subsection{Adaptivity to structure}
 
-Sample complexity is exponential in dimension if only assume lispchitz continuous (curse of dimensionality). Adding some structure: gets polynomial. We would like 1 HL Neural networks to adapt to these structures. Generalization properties: adaptivity to structure and variable selection, assuming f* has a simpler expression.
+We use a neural network to approximate an unknown function $f^\star \in \mathbb{R}^d$ that generated some samples that we observe at training time. The weakest assumption we can do on $f^\star$ is lipschitz continuity (or else it would be quite impossible to learn anything). With only this assumption, the sample complexity is exponential in the dimension. It means that it takes $\Omega(\varepsilon^{d})$ samples to learn $f^\star$ with excess risk $\varepsilon$. This is one formulation of the \textit{curse of dimensionality}.
 
-Problem 4: Empirical risk minimization (cf video) min 1/n sum l(f(xi), yi) st gamma1(f)<delta or gamma2(f)
+However, we may assume that $f^\star$ has some structure, and that it belongs to some parametric model (e.g affine functions, generative additive models or projection pursuit). Then, for a variety of models, the sample complexity gets polynomial in the dimension. We would like our neural network to adapt to this structure, that is to learn $f^\star$ in the parametric model with an excess risk polynomial in $d$.
 
-\subsection{Errors decomposition}
+It turns out one hidden layer convex neural networks have this adaptivity property when properly constrained. 
 
-3 errors decomposition.
+\subsection{Error decomposition}
 
-approximation + estimation + optimization.
-Leave the last one for part 4.
+We want to study the excess risk of a convex neural network trained with $n$ samples. The empirical risk minimization problem is:
+\begin{equation}
+\min_{f \in \mathcal{F}_k, \gamma_k(f)<\delta} \hat J(f)= \frac{1}{n} \sum_{i=1}^n \ell(f(x_i), y_i)
+\end{equation}
 
-\subsection{Generalization error}
+with $k=1$ or $k=2$, depending on the constraint on $f$ considered.\\
 
-Generalization error = approximation error + estimation error
+Suppose we can find an $\eta$-approximate minimizer $\hat f$ of $\hat J$ on the convex set $\mathcal{F}^\delta = \{f \in \mathcal{F}, \gamma(f)<\delta\}$. It is such that $\hat J(\hat f) \leq \eta + \inf_{f \in \mathcal{F}^\delta} \hat J(f) $. But $\hat J$ is only an estimation of $J$, and  $\mathcal{F}^\delta$ is only a subset of $\mathcal{F}$.
 
-1) estimation: rademacher analysis for uniform deviations (...) O(delta/sqrt n)
+\begin{theorem}
+We have the following decomposition of errors:
+$$ J(\hat f) - \inf_{f \in \mathcal{F}} J(f) \leq \left[\inf_{f \in \mathcal{F}^\delta} J(f) - \inf_{f \in \mathcal{F}} J(f)\right] + 2 \sup_{f \in \mathcal{F}^\delta} |\hat J(f) - J(f) | + \eta$$ 
+where the terms are respectively the \emph{approximation error}, the \emph{estimation error} and the \emph{optimization error}.
+\end{theorem}
 
-2) approximation: gamm1 <= gamma2 donc F1 inclus dans F2
+\textit{Proof}: we write the left member as a sum of 4 terms $\left(J(\hat f) - \hat J(\hat f) \right) + \left( \hat J(\hat f) - \inf_{f \in \mathcal{F}^\delta} \hat J(f)  \right) + \left( \inf_{f \in \mathcal{F}^\delta}  \hat J(f)  - \inf_{f \in \mathcal{F}^\delta} J(f) \right) +
+ \left( \inf_{f \in \mathcal{F}^\delta}  J(f) - \inf_{f \in \mathcal{F}} J(f) \right)$. The first and third term are upper bounded by the estimation error, the second is the optimization error and the last one is the approximation error.
 
-smoothness asumptions -> appartenance a F1/F2. 
+
+\subsection{Generalization properties}
+
+In this part we only consider the generalization error: the sum of estimation error and approximation error, where we generally optimize $\delta$ to get a bound with the best scaling in $d$ and $n$. We will deal with optimization in part 4.\\
+
+The estimation error can be studied with a standard technique using Rademacher complexities. It is not specific to our problem.
+
+\begin{proposition}
+The estimation error is bounded in expectation or with high probability by a bound that scales with the dimension as $\sqrt{\log d}$ for $\alpha \geq 1$ and as $\sqrt{d}$ for $\alpha = 0$.
+\end{proposition}
+
+The approximation error has a different behavior, depending on the space in which $f$ lies. First, notice that $\gamma_1 \leq \gamma_2$ because of Jensen's inequality, and so $\mathcal{F}_2 \subset \mathcal{F}_1$. The two spaces have different properties. For instance, learning in $\mathcal{F}_2$ can be done by random sampling of hidden units or kernel methods, while learning in $\mathcal{F}_1$ involves potentially non polynomial optimization algorithms, as we will see in part 4.
+
+However, only $\mathcal{F}_1$ allows adaptivity. Roughly, the reason is that $\mathcal{F}_2$ is too small to learn non-smooth functions with singularities. For instance, $x\mapsto (w^\top x+b)^\alpha_+$ is always in $\mathcal{F}_1$, but not in $\mathcal{F}_2$ in general. We can think of it as the difference between an $L^1$ penalization which induces sparsity, while $L^2$ does not; $\mathcal{F}_1$ performs selection on hidden units, while $\mathcal{F}_2$ does not.\\
+
+--STOP--
+
+
+We may characterize belonging to $\mathcal{F}_1$ and $\mathcal{F}_2$ as a function of the smoothness of $f$.
+
+smoothness assumptions -> appartenance a F1/F2. 
 gamma1 and gamma2 exist under smoothness asumptions Approximations par fonctions avec gamma < delta, bound depend de d. proof with spherical harmonics.
 
-Adaptivity: can we do better when subspace s, replace d par s? -> the difference between F1 and F2. 
-approximation errors for lipschitz continuous gives bounds. Function of d. Only adaptive for F1 and not F2.
-Reason: F2 inclus dans F1. Too small, lack of adaptivity.
-Only learning smooth functions, allow singularity with l1. l2 is too small.
-l1 performs selection on hidden units, induces sparsity. Not l2. For instance cannot put diracs in l2 (à préciser).
+Adaptivity: can we do better when subspace s, replace d par s? -> the difference between F1 and F2.  approximation errors for lipschitz continuous gives bounds. Function of d. 
 
-Conclusion: F1 is good, F2 not enough
+LACK of adaptivity. Only adaptive for F1 and not F2. Conclusion: F1 is good, F2 not enough
 
 \section{An Optimization Problem}
 
@@ -241,9 +264,11 @@ Link to NP hard problems.
 
 Open problems.
 
+Number of units
+
 \subsection{The Particle Gradient Flow Approach}
 
-A more general result, can be applied to this problem. Tackle an optimization problem and provide global convergence guarantees.
+A more general result, can be applied to this problem. Tackle an optimization problem and provide global convergence guarantees. \cite{chizat2018global}
 
 \section{Numerical Experiments}
 
@@ -251,6 +276,10 @@ Main body (~10 pages) :
 Presentation of the method(s). 
 Theoretical guarantees. 
 Numerics. 
+
+
+\section{Added}
+Illustrate lazy training \cite{chizat:hal-01945578}
 
 \section{Conclusion and perspectives}
 

@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: apalike.bst
 Database file #1: biblio.bib
 Warning--empty booktitle in haeffele2017global
-You've used 11 entries,
+You've used 12 entries,
             1935 wiz_defined-function locations,
-            524 strings with 5464 characters,
-and the built_in function-call counts, 4357 in all, are:
-= -- 411
-> -- 212
-< -- 6
-+ -- 73
-- -- 72
-* -- 344
-:= -- 769
-add.period$ -- 32
-call.type$ -- 11
-change.case$ -- 91
+            527 strings with 5574 characters,
+and the built_in function-call counts, 4639 in all, are:
+= -- 440
+> -- 225
+< -- 7
++ -- 78
+- -- 76
+* -- 365
+:= -- 826
+add.period$ -- 35
+call.type$ -- 12
+change.case$ -- 98
 chr.to.int$ -- 10
-cite$ -- 12
-duplicate$ -- 181
-empty$ -- 288
-format.name$ -- 89
-if$ -- 850
-int.to.chr$ -- 2
+cite$ -- 13
+duplicate$ -- 190
+empty$ -- 302
+format.name$ -- 96
+if$ -- 901
+int.to.chr$ -- 3
 int.to.str$ -- 0
 missing$ -- 11
-newline$ -- 57
-num.names$ -- 33
-pop$ -- 104
+newline$ -- 62
+num.names$ -- 36
+pop$ -- 107
 preamble$ -- 1
-purify$ -- 91
+purify$ -- 98
 quote$ -- 0
-skip$ -- 133
+skip$ -- 141
 stack$ -- 0
-substring$ -- 212
+substring$ -- 224
 swap$ -- 28
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 72
 warning$ -- 1
-while$ -- 30
+while$ -- 32
 width$ -- 0
-write$ -- 135
+write$ -- 147
 (There was 1 warning)
