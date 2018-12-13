@@ -81,7 +81,9 @@ In \cite{haeffele2017global} are studied conditions under which the optimization
 
 There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data are \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
 
-In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data are on a sphere.\\
+In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data are on a sphere.
+
+However, \cite{chizat:hal-01945578} notice that part of these results may be explained by a specific \textit{lazy} training setting which does not reflect practical deep learning applications. \\
 
 In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
 
@@ -189,13 +191,13 @@ If $\mathcal{V}$ is compact, the space $\mathcal{F}_2$ of functions with finite 
 
 The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by sampling $m$ i.i.d hidden units $v_1,...,v_m$ and learning a function of the form $\frac{1}{m} \sum_{j=1}^m \eta_j \varphi_{v_j}(x)$ with a penalization on the $\ell^2$ norm of $\eta$. When $m$ tends to infinity, the approximate kernel $\hat k(x,y) = \sum_{j=1}^m \varphi_{v_j}(x) \varphi_{v_j}(y)$ tends to $k(x,y)$.
 
-\cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similars results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not possible in $\mathcal{F}_1$. 
+\cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similar results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not possible in $\mathcal{F}_1$. 
 
 \section{Theoretical Analysis}
 
 \subsection{Adaptivity to structure}
 
-We use a neural network to approximate an unknown function $f^\star \in \mathbb{R}^d$ that generated some samples that we observe at training time. The weakest assumption we can do on $f^\star$ is lipschitz continuity (or else it would be quite impossible to learn anything). With only this assumption, the sample complexity is exponential in the dimension. It means that it takes $\Omega(\varepsilon^{d})$ samples to learn $f^\star$ with excess risk $\varepsilon$. This is one formulation of the \textit{curse of dimensionality}.
+We use a neural network to approximate an unknown function $f^\star \in \mathbb{R}^d$ that generated some samples that we observe at training time. The weakest assumption we can do on $f^\star$ is Lipschitz continuity (else it would be quite impossible to learn anything). With only this assumption, the sample complexity is exponential in the dimension. It means that it takes $\Omega(\varepsilon^{d})$ samples to learn $f^\star$ with excess risk $\varepsilon$. This is one formulation of the \textit{curse of dimensionality}.
 
 However, we may assume that $f^\star$ has some structure, and that it belongs to some parametric model (e.g affine functions, generative additive models or projection pursuit). Then, for a variety of models, the sample complexity gets polynomial in the dimension. We would like our neural network to adapt to this structure, that is to learn $f^\star$ in the parametric model with an excess risk polynomial in $d$.
 
@@ -236,19 +238,28 @@ The approximation error has a different behavior, depending on the space in whic
 
 However, only $\mathcal{F}_1$ allows adaptivity. Roughly, the reason is that $\mathcal{F}_2$ is too small to learn non-smooth functions with singularities. For instance, $x\mapsto (w^\top x+b)^\alpha_+$ is always in $\mathcal{F}_1$, but not in $\mathcal{F}_2$ in general. We can think of it as the difference between an $L^1$ penalization which induces sparsity, while $L^2$ does not; $\mathcal{F}_1$ performs selection on hidden units, while $\mathcal{F}_2$ does not.\\
 
---STOP--
 
+We may characterize belonging to $\mathcal{F}_1$ and $\mathcal{F}_2$ as a function of the smoothness of $f$. To do this, we may first study the sets $\mathcal{G}_1$ and $\mathcal{G}_2$ of functions defined on the sphere $\mathbb{S}^d \subset \mathbb{R}^{d+1}$, and then extend the results to the whole spaces $\mathcal{F}_1$ and $\mathcal{F}_2$.
 
-We may characterize belonging to $\mathcal{F}_1$ and $\mathcal{F}_2$ as a function of the smoothness of $f$.
+Here is a sufficient condition to belonging to $\mathcal{G}_2$ and hence to $\mathcal{G}_1$. We express it for ReLU activation functions ($\alpha=1$) but it holds with different bounds for any choice of $\alpha$. \cite{bach2017breaking} proves the two following results using spherical harmonics.
 
-smoothness assumptions -> appartenance a F1/F2. 
-gamma1 and gamma2 exist under smoothness asumptions Approximations par fonctions avec gamma < delta, bound depend de d. proof with spherical harmonics.
+\begin{proposition}
+\emph{[Finite total variation on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even function such that all $i$-th order derivatives exist and are upped bounded in absolute value by a constant for $i \leq d/2 + 3/2$. Then $\gamma_1(g) \leq \gamma_2(g) < +\infty$.
+\end{proposition}
 
-Adaptivity: can we do better when subspace s, replace d par s? -> the difference between F1 and F2.  approximation errors for lipschitz continuous gives bounds. Function of d. 
+Finally, any Lipschitz-continuous function may be approximated by a function in $\mathcal{F}_2^\delta$ with a control on its $\gamma_2$ norm. For simplicity, we express the general result in the particular case of $\alpha = 1$ and 1-Lipschitz functions on the sphere.
 
-LACK of adaptivity. Only adaptive for F1 and not F2. Conclusion: F1 is good, F2 not enough
+\begin{proposition}
+\emph{[Approximation of Lipschitz-continuous functions on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even 1-Lipschitz function such that for all $x \in  \mathbb{S}^d$, $g(x) \leq 1$. For $\delta$ greater than a constant depending only on $d$, there exists $h\in \mathcal{G}_2$ such that $\gamma_2(g) \leq \delta$ and $\sup_{x \in  \mathbb{S}^d} |h(x) - g(x)| \leq C(d) \delta^{-2/(d+1)} \log(\delta)$.
+\end{proposition}
+
+From these bounds on both estimation and approximation errors, one can derive generalization bounds for various models. One of the main conclusions is that when $f^\star$ depends only on a subspace of dimension $s \leq d$, then we can replace $d$ by $s$ in the generalization bounds only in $\mathcal{F}_1$ and not in $\mathcal{F}_2$. In fact, the dependence on a lower dimensional subspace allows to reduce smoothness requirements from the previous results only in $\mathcal{F}_1$.
+
+ Therefore, only $\mathcal{F}_1$ is adaptive to structure and \textit{breaks the curse of dimensionality}. Because of this, we will now focus on the properties of $\mathcal{F}_1$ and in particular on how to optimize in this space.
 
 \section{An Optimization Problem}
+
+-- STOP --
 
 Optimizing in F1 is hard...
 
@@ -278,8 +289,11 @@ Theoretical guarantees.
 Numerics. 
 
 
-\section{Added}
+Added:
+
 Illustrate lazy training \cite{chizat:hal-01945578}
+
+faire 2 gifs avec active / lazy training en changeant un paramètre.
 
 \section{Conclusion and perspectives}
 
