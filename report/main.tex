@@ -241,7 +241,7 @@ However, only $\mathcal{F}_1$ allows adaptivity. Roughly, the reason is that $\m
 
 We may characterize belonging to $\mathcal{F}_1$ and $\mathcal{F}_2$ as a function of the smoothness of $f$. To do this, we may first study the sets $\mathcal{G}_1$ and $\mathcal{G}_2$ of functions defined on the sphere $\mathbb{S}^d \subset \mathbb{R}^{d+1}$, and then extend the results to the whole spaces $\mathcal{F}_1$ and $\mathcal{F}_2$.
 
-Here is a sufficient condition to belonging to $\mathcal{G}_2$ and hence to $\mathcal{G}_1$. We express it for ReLU activation functions ($\alpha=1$) but it holds with different bounds for any choice of $\alpha$. \cite{bach2017breaking} proves the two following results using spherical harmonics.
+Here is a sufficient condition to belonging to $\mathcal{G}_2$ and hence to $\mathcal{G}_1$. We express it for ReLU activation functions ($\alpha=1$) but it holds with different bounds for any choice of $\alpha$. \cite{bach2017breaking} proves the following two results using spherical harmonics.
 
 \begin{proposition}
 \emph{[Finite total variation on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even function such that all $i$-th order derivatives exist and are upped bounded in absolute value by a constant for $i \leq d/2 + 3/2$. Then $\gamma_1(g) \leq \gamma_2(g) < +\infty$.
@@ -259,23 +259,43 @@ From these bounds on both estimation and approximation errors, one can derive ge
 
 \section{An Optimization Problem}
 
--- STOP --
+The preceding analysis has stated the good generalization properties of learning in $\mathcal{F}_1$. We now consider the empirical risk minimization problem:
+\begin{equation}
+\min_{f\in \mathcal{F}_1~ s.t. ~ \gamma_{1} (f) \leq \delta}  \hat J(f)
+\end{equation}
+ Since the problem is convex, it should be an easy one. However, it is an infinite dimensional problem. We need somehow to project this problem into a finite dimensional problem.
+ 
+ 
+\subsection{The conditional gradient algorithm}
+ 
+The conditional gradient algorithm (also known as Frank-Wolfe algorithm) can be used to solve this problem. It allows to build incrementally a set of functions $f_t$ in $\mathcal{F}_1^\delta$. We must assume that the functional to minimize is convex and $L$-smooth.\\
 
-Optimizing in F1 is hard...
+The algorithm is as follows. First initialize $f_0$ with any function in  $\mathcal{F}_1^\delta$. Then for each $t\geq 0$:
+\begin{enumerate}
+\item Find $\bar f_t \in \textnormal{argmin}_{f \in \mathcal{F}_1^\delta} \left\langle f, \hat J^\prime (f_t) \right\rangle_{L^2}$,
+\item Set $f_{t+1} = (1 - \rho_t) f_t + \rho_t \bar f_t$, with either $\rho_t = \frac{2}{t+1}$ or found with line search.
+\end{enumerate}
 
-\subsection{Frank Wolfe /  Learning from basis functions}
+This algorithm has a convergence rate of $O(\delta^2 /t)$. Moreover, at each time step $t$, $f_t$ is a convex combination of $t$ extreme points of $\mathcal{F}_1^\delta$. Due to the $\ell^1$ penalization, the extreme points of $\mathcal{F}_1^\delta$ are sparse vectors (single neurons) and so $\mathcal{F}_1^\delta$ is the convex hull of functions $x \mapsto \pm \delta  (v^\top x)^\alpha_{+}$, for $v \in \mathcal{V}$.\\
 
-Frank Wolfe / conditional gradient.
 
-Barron: one way to provide a finite decomposition of functions in F1 with error epsilon and control on the number of neurons depending on gamma1. -> Using FW.
+The algorithm can be applied in $\mathcal{F}_1$ with $J(f) = \mathbb{E}\left[(f(x) - g(x))^2\right]$ to find functions $f_t$ supported by $t$ basis functions such that $\mathbb{E}\left[(f(x) - g(x))^2\right] = O(\gamma_1(g) /t)$. Any function $g \in \mathcal{F}_1$ can be approximated with an error $\varepsilon$ with $t = O(\gamma_1(g)^2 /\varepsilon^2)$ hidden units. \cite{bach2017breaking} provides a slightly better scaling in $\varepsilon$ using convex neural networks with ReLU activation functions.
 
-Bail des zonotopes donne une meilleure borne sur le nombre de neurones ?
+\subsection{The problem with Frank-Wolfe}
+
+In the particular case of training a convex neural network with a finite amount of data (empirical risk minimization), we may derive more precisely the first step of the algorithm. The problem of adding a new hidden unit is:
+\begin{equation}
+\max_{v \in \mathbb{R}^{d+1}} \Biggl\lvert\frac{1}{n} \sum_{i=1}^n g_i \cdot (v^\top x_i)^\alpha_+ \Biggr\rvert
+\end{equation}
+where $g_i = \ell^\prime(y_i, f_t(x_i))$.
+
+
+alpha = 0 : known to be NP hard
+alpha = 1 : link with zonotopes and hausdorff distance between them.
 
 Link to NP hard problems.
 
 Open problems.
-
-Number of units
 
 \subsection{The Particle Gradient Flow Approach}
 
@@ -300,6 +320,8 @@ faire 2 gifs avec active / lazy training en changeant un paramètre.
 Conclusion and perspective (~1 page)
 Summary of the result obtained: pros and cons (limitation, problems, error in the articles, etc)
 Possible improvement/extension
+
+\newpage
 
 \bibliographystyle{apalike}
 \bibliography{biblio.bib}

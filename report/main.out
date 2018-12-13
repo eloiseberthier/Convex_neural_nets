@@ -10,7 +10,8 @@
 \BOOKMARK [2][-]{subsection.3.2}{Error decomposition}{section.3}% 10
 \BOOKMARK [2][-]{subsection.3.3}{Generalization properties}{section.3}% 11
 \BOOKMARK [1][-]{section.4}{An Optimization Problem}{}% 12
-\BOOKMARK [2][-]{subsection.4.1}{Frank Wolfe / Learning from basis functions}{section.4}% 13
-\BOOKMARK [2][-]{subsection.4.2}{The Particle Gradient Flow Approach}{section.4}% 14
-\BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 15
-\BOOKMARK [1][-]{section.6}{Conclusion and perspectives}{}% 16
+\BOOKMARK [2][-]{subsection.4.1}{The conditional gradient algorithm}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{The problem with Frank-Wolfe}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.3}{The Particle Gradient Flow Approach}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 16
+\BOOKMARK [1][-]{section.6}{Conclusion and perspectives}{}% 17

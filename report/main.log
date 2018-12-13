@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.5)  13 DEC 2018 11:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.5)  13 DEC 2018 16:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -840,42 +840,55 @@ Underfull \hbox (badness 10000) in paragraph at lines 239--240
  []
 
 [9]
-Overfull \hbox (5.68054pt too wide) in paragraph at lines 282--283
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--280
+
+ []
+
+[10]
+Overfull \hbox (5.68054pt too wide) in paragraph at lines 302--303
 \T1/lmr/m/n/10.95 prob-lem and pro-vide global con-ver-gence guar-an-tees. [[]]
  
  []
 
-[10] (./main.bbl
+[11] (./main.bbl
 Underfull \hbox (badness 4217) in paragraph at lines 57--60
 []\T1/lmr/m/n/10.95 Zhang, Y., Liang, P., and Wain-wright, M. J.
  []
 
 )
-<tree.jpg, id=171, 547.04375pt x 529.98pt>
+<tree.jpg, id=184, 547.04375pt x 529.98pt>
 File: tree.jpg Graphic file (type jpg)
 <use tree.jpg>
-Package pdftex.def Info: tree.jpg  used on input line 312.
+Package pdftex.def Info: tree.jpg  used on input line 334.
 (pdftex.def)             Requested size: 209.12778pt x 202.6075pt.
 File: tree.jpg Graphic file (type jpg)
 <use tree.jpg>
-Package pdftex.def Info: tree.jpg  used on input line 318.
+Package pdftex.def Info: tree.jpg  used on input line 340.
 (pdftex.def)             Requested size: 209.12778pt x 202.6075pt.
- [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 326.
- [12 <./tree.jpg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 326.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 348.
+[12] [13 <./tree.jpg>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 348.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 326.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 326.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 348.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 348.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: A168AF7CAC832CA8729FEFFA13FF11CF;1088.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 326.
+(rerunfilecheck)             Checksum: 6EAB4061657DD8A58B378ED7B7EC637D;1157.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 348.
  ) 
 Here is how much of TeX's memory you used:
- 11138 strings out of 494091
- 177256 string characters out of 6163523
+ 11145 strings out of 494091
+ 177329 string characters out of 6163523
  365496 words of memory out of 5000000
- 14595 multiletter control sequences out of 15000+600000
+ 14596 multiletter control sequences out of 15000+600000
  81012 words of font info for 68 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  42i,13n,51p,9083b,522s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -900,10 +913,10 @@ sic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2018basic/t
 exmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2018basic/texmf-d
 ist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2018basic/texmf-dist/fo
 nts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (12 pages, 521335 bytes).
+Output written on main.pdf (13 pages, 528130 bytes).
 PDF statistics:
- 257 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
- 56 named destinations out of 1000 (max. 500000)
- 134 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 272 PDF objects out of 1000 (max. 8388607)
+ 237 compressed objects within 3 object streams
+ 62 named destinations out of 1000 (max. 500000)
+ 142 words of extra memory for PDF output out of 10000 (max. 10000000)
 
