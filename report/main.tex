@@ -67,6 +67,9 @@ Which contributions (theory, numerics, etc) ?
 
 \newpage
 
+%\tableofcontents
+%\newpage
+
 \section{Introduction}
 
 While the use of neural networks has dramatically increased the performance of some recognition systems, there still lacks a clear mathematical understanding of this success. One of the key issues is that optimizing neural networks is a non-convex problem, hence training algorithms may not return a global minimum.
@@ -118,7 +121,7 @@ Let $\mathcal{W}$ be the Hilbert space of functions from $\mathcal{F}_\mathcal{V
 
 We can define the following problem:
 \begin{equation}
-\min_{\eta \in \mathcal{W}} \mathcal{C}(\eta) = \frac{1}{n} \sum_{i=1}^n \ell(\eta \cdot h(x_i), y_i) + \Omega(\eta)
+\min_{\eta \in \mathcal{W}} \mathcal{C}(\eta) := \frac{1}{n} \sum_{i=1}^n \ell(\eta \cdot h(x_i), y_i) + \Omega(\eta)
 \end{equation}
 
 \begin{lemma}
@@ -207,7 +210,7 @@ It turns out one hidden layer convex neural networks have this adaptivity proper
 
 We want to study the excess risk of a convex neural network trained with $n$ samples. The empirical risk minimization problem is:
 \begin{equation}
-\min_{f \in \mathcal{F}_k, \gamma_k(f)<\delta} \hat J(f)= \frac{1}{n} \sum_{i=1}^n \ell(f(x_i), y_i)
+\min_{f \in \mathcal{F}_k, \gamma_k(f)<\delta} \hat J(f) := \frac{1}{n} \sum_{i=1}^n \ell(f(x_i), y_i)
 \end{equation}
 
 with $k=1$ or $k=2$, depending on the constraint on $f$ considered.\\
@@ -283,23 +286,44 @@ The algorithm can be applied in $\mathcal{F}_1$ with $J(f) = \mathbb{E}\left[(f(
 
 \subsection{The problem with Frank-Wolfe}
 
-In the particular case of training a convex neural network with a finite amount of data (empirical risk minimization), we may derive more precisely the first step of the algorithm. The problem of adding a new hidden unit is:
+In the particular case of training a convex neural network with a finite amount of data (empirical risk minimization), we may derive more precisely the first step of the algorithm. The subproblem of adding a new hidden unit is:
 \begin{equation}
 \max_{v \in \mathbb{R}^{d+1}} \Biggl\lvert\frac{1}{n} \sum_{i=1}^n g_i \cdot (v^\top x_i)^\alpha_+ \Biggr\rvert
 \end{equation}
-where $g_i = \ell^\prime(y_i, f_t(x_i))$.
+where $g_i = \ell^\prime(y_i, f_t(x_i))$. This is similar to gradient boosting algorithms.\\
+
+For $\alpha = 0$, it corresponds to the hard-thresholding activation function. The problem is equivalent to solving:
+\begin{equation}
+\max_{v \in \mathbb{R}^{d+1}} \sum_{i\in I_+} |y_i| \cdot \mathbf{1}_{v^\top x_i> 0}  - \sum_{i\in I_-} |y_i| \cdot \mathbf{1}_{v^\top x_i> 0}
+\end{equation}
+where $I_+ = \left\{i, y_i \geq 0 \right\}$ and $I_- = \left\{i, y_i < 0 \right\}$. This problem is equivalent to to finding an hyperplane minimizing a weighted misclassification error. It is known to be NP-hard in general, and one cannot find a constant-factor polynomial approximation to this problem.\\
+
+For $\alpha = 1$ (ReLU activation functions), it is equivalent to:
+\begin{equation}
+\max_{||v|| \leq 1} \sum_{i\in I_+} (v^\top |y_i| x_i )_+  - \sum_{i\in I_-} (v^\top |y_i| x_i )_+
+\end{equation}
+It can be reformulated using convex duality as the maximization of the Hausdorff distance between two convex sets that are zonotopes. A zonotope $Z$ is the sum of some segments from the origin: $Z = \left\{ \sum_{i=1}^r b_i t_i, b \in [0, 1]^r \right\}$. But computing the Hausdorff distance between two zonotopes is still a difficult problem. No convex relaxation providing an uniform constant approximation guarantee in polynomial time can be found, because actually the problem reduces to the case $\alpha = 0$.\\
+
+However, there could be weaker relaxations that would preserve the generalization bounds in part 3. \cite{bach2017breaking} provides some sufficient conditions for the existence of polynomial time algorithms with the same generalization bounds, but this question is left open.\\
+
+We can now formulate the kind of trade-off induced by convex neural networks. They transform the non-convex problem of optimizing a neural network into the convex problem of optimizing a convex neural network, yet in infinite dimension. With a proper constraint on the variation norm, convex neural networks are adaptive to structure. But the subproblem of adding a new hidden layer in the conditional gradient algorithm is computationally untractable. One might also consider other optimization methods.
 
 
-alpha = 0 : known to be NP hard
-alpha = 1 : link with zonotopes and hausdorff distance between them.
+\subsection{An Approach using Particle Gradient Flow}
 
-Link to NP hard problems.
+\cite{chizat2018global} propose a method to solve a more general problem in the space of measures that covers our problem. In this case we use a penalization instead of a constraint.
 
-Open problems.
+Let $\mathcal{M}(\mathcal{V})$ the set of signed measures on the parameter space $\mathcal{V}$ (here the space of possible hidden unit parameters), $R$ a convex loss function on a Hilbert space and $G:\mathcal{M}(\mathcal{V}) \rightarrow \mathbb{R}$ a convex regularizer. Consider the problem:
+\begin{equation}
+\min_{\mu \in \mathcal{M}(\mathcal{V})} J(\mu):=R\left( \int \varphi \textnormal{d}\mu \right) + G(\mu)
+\end{equation}
 
-\subsection{The Particle Gradient Flow Approach}
+This is again an infinite-dimensional problem. The proposed approach consists in discretizing the measure $\mu$ as a mixture of $m$ particles. This is a finite-dimensional problem:
+\begin{equation}
+\min_{w \in \mathbb{R}^m,~\theta \in \mathcal{V}^m} J_m(w, \theta):=J\left(  \frac{1}{m} \sum_{i=1}^m w_i \delta_{\theta_i}\right)
+\end{equation}
 
-A more general result, can be applied to this problem. Tackle an optimization problem and provide global convergence guarantees. \cite{chizat2018global}
+ Tackle an optimization problem and provide global convergence guarantees. 
 
 \section{Numerical Experiments}
 
@@ -315,7 +339,7 @@ Illustrate lazy training \cite{chizat:hal-01945578}
 
 faire 2 gifs avec active / lazy training en changeant un paramètre.
 
-\section{Conclusion and perspectives}
+\section{Conclusion}
 
 Conclusion and perspective (~1 page)
 Summary of the result obtained: pros and cons (limitation, problems, error in the articles, etc)

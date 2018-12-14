@@ -12,6 +12,6 @@
 \BOOKMARK [1][-]{section.4}{An Optimization Problem}{}% 12
 \BOOKMARK [2][-]{subsection.4.1}{The conditional gradient algorithm}{section.4}% 13
 \BOOKMARK [2][-]{subsection.4.2}{The problem with Frank-Wolfe}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.3}{The Particle Gradient Flow Approach}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.3}{An Approach using Particle Gradient Flow}{section.4}% 15
 \BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 16
-\BOOKMARK [1][-]{section.6}{Conclusion and perspectives}{}% 17
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 17
