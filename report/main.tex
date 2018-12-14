@@ -306,7 +306,7 @@ It can be reformulated using convex duality as the maximization of the Hausdorff
 
 However, there could be weaker relaxations that would preserve the generalization bounds in part 3. \cite{bach2017breaking} provides some sufficient conditions for the existence of polynomial time algorithms with the same generalization bounds, but this question is left open.\\
 
-We can now formulate the kind of trade-off induced by convex neural networks. They transform the non-convex problem of optimizing a neural network into the convex problem of optimizing a convex neural network, yet in infinite dimension. With a proper constraint on the variation norm, convex neural networks are adaptive to structure. But the subproblem of adding a new hidden layer in the conditional gradient algorithm is computationally untractable. One might also consider other optimization methods.
+We can now formulate the kind of tradeoff induced by convex neural networks. They transform the non-convex problem of optimizing a neural network into the convex problem of optimizing a convex neural network, yet in infinite dimension. With a proper constraint on the variation norm, convex neural networks are adaptive to structure. But the subproblem of adding a new hidden layer in the conditional gradient algorithm is computationally untractable. One might also consider other optimization methods.
 
 
 \subsection{An Approach using Particle Gradient Flow}
@@ -320,26 +320,51 @@ Let $\mathcal{M}(\mathcal{V})$ the set of signed measures on the parameter space
 
 This is again an infinite-dimensional problem. The proposed approach consists in discretizing the measure $\mu$ as a mixture of $m$ particles. This is a finite-dimensional problem:
 \begin{equation}
-\min_{w \in \mathbb{R}^m,~\theta \in \mathcal{V}^m} J_m(w, \theta):=J\left(  \frac{1}{m} \sum_{i=1}^m w_i \delta_{\theta_i}\right)
+\min_{w \in \mathbb{R}^m,~u \in \mathcal{V}^m} J_m(w, u):=J\left(  \frac{1}{m} \sum_{i=1}^m w_i \delta_{u_i}\right)
 \end{equation}
 
- Tackle an optimization problem and provide global convergence guarantees. 
+This can be solved with a classical gradient descent algorithm, but since $J_m$ is not convex, it may only converge to a local minimum. We consider the Wasserstein gradient flow, which corresponds to a continuous-time gradient descent on parameters $w$ and $u$. \cite{chizat2018global} prove that when the number of particles tends to infinity and under proper initialization, then the gradient flow converges to a global minimum.\\
+
+By \textit{lifting}, one can remove the asymmetry between the weights and positions of the Diracs, and each hidden unit $\phi$ may be parametrized by a parameter $\theta = (w, v)$, with $\phi(\theta, x)=w \cdot \varphi_v(x) = w\cdot \sigma(v^\top x)$ (where $\sigma$ is an activation function). The main assumptions to ensure global convergence are:
+\begin{itemize}
+\item the homogeneity of $\phi$ with respect to one or both parameters;
+\item the diversity in the initialization of the parameters, drawn according to a distribution $\mu_0$ which must satisfy a \textit{separation} property.\\
+\end{itemize}
+
+The general result can be specialized to the case of ReLU ($\phi$ is 2-homogeneous) and sigmoid ($\phi$ is 1-homogeneous in its first argument) activation functions.
+
+\begin{proposition}
+\emph{[ReLU activations]}
+If the support of $\mu_0$ is $r_0 \mathbb{S}^{d+1}$ for some $r_0>0$ and if the Wasserstein gradient flow of $J$ converges to $\mu_\infty$ for the Wasserstein distance $W_2$, then $\mu_\infty$ is a global minimizer of $J$.
+\end{proposition}
+
+\begin{proposition}
+\emph{[Sigmoid activations]}
+Assume that the marginal distribution of the input data has finite moments up to order $4$ and that the support of $\mu_0$ is $\{0\} \times \mathbb{R}^{d+1}$. If the Wasserstein gradient flow of $F$ converges to $\mu_\infty$ for $W_2$, then $\mu_\infty$ is a global minimizer of $J$.
+\end{proposition}
+
+These results provide strong convergence guarantees, but they apply to an ideal dynamics, with continuous time gradient flow and an infinite number of units. Yet they prescribe a practical method to initialize gradient descent in order to avoid local minima.
 
 \section{Numerical Experiments}
+
+\subsection{Particle gradient descent in dimension 2}
+
+Rely on this method.
+
+\subsection{How much overparametrization is needed?}
+
+\subsection{About lazy and active training}
+
+Added: Illustrate lazy training \cite{chizat:hal-01945578}
+
+faire 2 gifs avec active / lazy training en changeant un paramètre.
+
+\section{Conclusion}
 
 Main body (~10 pages) : 
 Presentation of the method(s). 
 Theoretical guarantees. 
 Numerics. 
-
-
-Added:
-
-Illustrate lazy training \cite{chizat:hal-01945578}
-
-faire 2 gifs avec active / lazy training en changeant un paramètre.
-
-\section{Conclusion}
 
 Conclusion and perspective (~1 page)
 Summary of the result obtained: pros and cons (limitation, problems, error in the articles, etc)
