@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.5)  14 DEC 2018 19:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.11.5)  16 DEC 2018 19:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,7 +608,20 @@ Package: eso-pic 2015/07/21 v2.0g eso-pic (RN)
 \c@proposition=\count118
 \c@corollary=\count119
 
-(./main.aux)
+(./main.aux
+
+LaTeX Warning: Label `fig:sub3' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:sub3' multiply defined.
+
+
+LaTeX Warning: Label `fig:sub4' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:sub4' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
@@ -632,6 +645,7 @@ LaTeX Font Info:    ... okay on input line 51.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
 LaTeX Font Info:    ... okay on input line 51.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 51.
+
 (/usr/local/texlive/2018basic/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -886,40 +900,77 @@ Overfull \hbox (13.55339pt too wide) in paragraph at lines 334--335
 LU ($\OML/lmm/m/it/10.95 ^^^$ \T1/lmr/m/n/10.95 is 2-homogeneous)
  []
 
-[12] [13] (./main.bbl
+[12]
+Overfull \hbox (0.63873pt too wide) in paragraph at lines 360--361
+[]\T1/lmr/m/n/10.95 Each par-ti-cle is rep-re-sented (see fig-ure 1) at time $\
+OML/lmm/m/it/10.95 t$ \T1/lmr/m/n/10.95 by a po-si-tion $\OMS/lmsy/m/n/10.95 j\
+OML/lmm/m/it/10.95 w\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 t\OT1/lmr/m/n/10.95
+ )\OMS/lmsy/m/n/10.95 j\OML/lmm/m/it/10.95 v\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/1
+0.95 t\OT1/lmr/m/n/10.95 ) \OMS/lmsy/m/n/10.95 2
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 360--361
+
+ []
+
+<relu.png, id=209, 466.74374pt x 334.24875pt>
+File: relu.png Graphic file (type png)
+<use relu.png>
+Package pdftex.def Info: relu.png  used on input line 366.
+(pdftex.def)             Requested size: 198.65903pt x 142.26378pt.
+<relu_fail.png, id=211, 475.7775pt x 377.41pt>
+File: relu_fail.png Graphic file (type png)
+<use relu_fail.png>
+Package pdftex.def Info: relu_fail.png  used on input line 372.
+(pdftex.def)             Requested size: 179.3381pt x 142.26378pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<sig50.png, id=212, 770.88pt x 455.7025pt>
+File: sig50.png Graphic file (type png)
+<use sig50.png>
+Package pdftex.def Info: sig50.png  used on input line 389.
+(pdftex.def)             Requested size: 199.16928pt x 117.73582pt.
+<sig10.png, id=213, 769.87625pt x 454.69875pt>
+File: sig10.png Graphic file (type png)
+<use sig10.png>
+Package pdftex.def Info: sig10.png  used on input line 395.
+(pdftex.def)             Requested size: 199.16928pt x 117.62914pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
+
+ []
+
+[14 <./relu.png> <./relu_fail.png> <./sig50.png> <./sig10.png>] [15]
+(./main.bbl
 Underfull \hbox (badness 4217) in paragraph at lines 57--60
 []\T1/lmr/m/n/10.95 Zhang, Y., Liang, P., and Wain-wright, M. J.
  []
 
 )
-<tree.jpg, id=214, 547.04375pt x 529.98pt>
-File: tree.jpg Graphic file (type jpg)
-<use tree.jpg>
-Package pdftex.def Info: tree.jpg  used on input line 383.
-(pdftex.def)             Requested size: 209.12778pt x 202.6075pt.
-File: tree.jpg Graphic file (type jpg)
-<use tree.jpg>
-Package pdftex.def Info: tree.jpg  used on input line 389.
-(pdftex.def)             Requested size: 209.12778pt x 202.6075pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 397.
-[14] [15 <./tree.jpg>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 397.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 444.
+ [16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 444.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 397.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 397.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 444.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 444.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 829559167B7CB5030C4203226FF92E61;1404.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 397.
+(rerunfilecheck)             Checksum: 044754017D54FA08B34E4E25CFDCF605;1395.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 444.
  ) 
 Here is how much of TeX's memory you used:
- 11165 strings out of 494091
- 177582 string characters out of 6163523
- 365496 words of memory out of 5000000
- 14602 multiletter control sequences out of 15000+600000
+ 11184 strings out of 494091
+ 177837 string characters out of 6163523
+ 366487 words of memory out of 5000000
+ 14614 multiletter control sequences out of 15000+600000
  89840 words of font info for 71 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  42i,13n,51p,9083b,522s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -944,10 +995,10 @@ sic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2018basic/t
 exmf-dist/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2018basic/texmf-d
 ist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2018basic/texmf-dist/fo
 nts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (15 pages, 543247 bytes).
+Output written on main.pdf (16 pages, 368144 bytes).
 PDF statistics:
- 305 PDF objects out of 1000 (max. 8388607)
- 268 compressed objects within 3 object streams
- 73 named destinations out of 1000 (max. 500000)
- 166 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 321 PDF objects out of 1000 (max. 8388607)
+ 276 compressed objects within 3 object streams
+ 77 named destinations out of 1000 (max. 500000)
+ 181 words of extra memory for PDF output out of 10000 (max. 10000000)
 
