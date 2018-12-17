@@ -9,7 +9,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{lmodern} % police de caractères
-
+\usepackage{float}
 \newcommand{\jump}{\vspace{0.3cm}}
 
 \usepackage[bookmarks=true]{hyperref} % liens hypertexte
@@ -53,17 +53,15 @@
 \setcounter{secnumdepth}{3}
 \setlength{\parindent}{0cm}
 
+%\vspace{5em}
 \maketitle
 %\fontfamily{lmss}\selectfont
 
 \everymath{\displaystyle}
 
-\abstract{
-\emph{1/2 page: What problem(s) is studied ? 
-Why is it relevant ? 
-What solution(s) is proposed ? 
-Which contributions (theory, numerics, etc) ? 
-}}
+\vspace{12em}
+
+\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension in hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of overparametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the overparametrization regime and the influence of the initialization.
 
 \newpage
 
@@ -82,15 +80,15 @@ Some rely on convex relaxations of the original optimization problem. \cite{zhan
 
 In \cite{haeffele2017global} are studied conditions under which the optimization landscape for the non-convex optimization problem is such that all critical points are either global minimizers or saddle points. \cite{visualloss} provide a tool to visualize the loss surface along random directions near the optimal parameters.
 
-There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data are \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
+There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
 
-In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data are on a sphere.
+In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data is on a sphere.
 
 However, \cite{chizat:hal-01945578} notice that part of these results may be explained by a specific \textit{lazy} training setting which does not reflect practical deep learning applications. \\
 
 In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
 
-Of course, while this approach solves the non-convexity issue, it introduces some other difficulties. These are extensively studied in \cite{bach2017breaking}, on which we will mainly focus in this report. A complete analysis of the generalization performance of convex neural networks is derived, in particular showing that high-dimensional non-linear variable selection may be achieved, without any strong assumption regarding the data. Yet this approach requires to solve a convex problem in infinite dimension and is only possible if the non-convex subproblem of adding a new hidden unit can be solved efficiently. Finding a polynomial-time algorithm solving this subproblem induced by the conditional gradient method is still an open question.
+Of course, while this approach solves the non-convexity issue, it introduces some other difficulties. These are extensively studied in \cite{bach2017breaking}, on which we will mainly focus in this report. A complete analysis of the generalization performance of convex neural networks is derived, in particular showing that high-dimensional non-linear variable selection may be achieved, without any strong assumption regarding the data. Yet this approach requires to solve a convex problem in infinite dimension and is only possible if the non-convex subproblem of adding a new hidden unit can be solved efficiently. Finding a polynomial-time algorithm approximating well this subproblem induced by the conditional gradient method is still an open question.
 
 \cite{chizat2018global} focus on solving the same convex problem, but avoid the potentially NP-hard problem of optimizing with conditional gradient. Instead, they discretize the unknown measure as a mixture of particles. This approach is inspired by optimal transport and brings strong asymptotical global optimality guarantees for gradient flow optimization. It also provides simple numerical experiments.\\
 
@@ -127,7 +125,7 @@ We can define the following problem:
 \begin{lemma}
 Problem (1) is a convex minimization problem.
 \end{lemma}
-The proof is straightforward: any Hilbert space $\mathcal{W}$ is convex, $ \ell(w \cdot \varphi(x_i), y_i)$ is convex in $w$ and by additivity the objective function also is.\\
+The proof is straightforward: any Hilbert space $\mathcal{W}$ is convex, $ \ell(w \cdot h(x_i), y_i)$ is convex in $w$ and by additivity the objective function also is.\\
 
 This problem formulation is from \cite{bengio2006convex}. It is a bit hard to handle as it introduces many notations that are not all explicit. Still it provides an intuitive idea of the problem we want to define: considering all the possible hidden units we could pick, how to combine them to make a good prediction, that is, how to choose the output weight $w$ to minimize $\mathcal{C}$. 
 
@@ -194,7 +192,7 @@ If $\mathcal{V}$ is compact, the space $\mathcal{F}_2$ of functions with finite 
 
 The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by sampling $m$ i.i.d hidden units $v_1,...,v_m$ and learning a function of the form $\frac{1}{m} \sum_{j=1}^m w_j \varphi_{v_j}(x)$ with a penalization on the $\ell^2$ norm of $w$. When $m$ tends to infinity, the approximate kernel $\hat k(x,y) = \sum_{j=1}^m \varphi_{v_j}(x) \varphi_{v_j}(y)$ tends to $k(x,y)$.
 
-\cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similar results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not possible in $\mathcal{F}_1$. 
+\cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similar results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not as simple in $\mathcal{F}_1$, as we will see in part 4.
 
 \section{Theoretical Analysis}
 
@@ -262,7 +260,7 @@ From these bounds on both estimation and approximation errors, one can derive ge
 
 \section{An Optimization Problem}
 
-The preceding analysis has stated the good generalization properties of learning in $\mathcal{F}_1$. We now consider the empirical risk minimization problem:
+The preceding analysis has stated the good generalization properties of learning in $\mathcal{F}_1$. It does not explain concretely how to learn the parameters of the network. We now consider the empirical risk minimization problem:
 \begin{equation}
 \min_{f\in \mathcal{F}_1~ s.t. ~ \gamma_{1} (f) \leq \delta}  \hat J(f)
 \end{equation}
@@ -331,7 +329,7 @@ By \textit{lifting}, one can remove the asymmetry between the weights and positi
 \item the diversity in the initialization of the parameters, drawn according to a distribution $\mu_0$ which must satisfy a \textit{separation} property.\\
 \end{itemize}
 
-The general result can be specialized to the case of ReLU ($\phi$ is 2-homogeneous) and sigmoid ($\phi$ is 1-homogeneous in its first argument) activation functions.
+The general result can be specialized to the case of ReLU ($\phi$ is 2-homogeneous) and sigmoid ($\phi$ is 1-homogeneous in its first argument) activation functions. The first proposition is not proved because the ReLU function violates some regularity conditions in the main theorem.
 
 \begin{proposition}
 \emph{[ReLU activations]}
@@ -410,26 +408,106 @@ For the sigmoid experiment, we noticed that the initialization of all output lay
 
 In our experiment the generative network had 2 hidden units. We always got convergence to the global minimum: all particles are on the black lines, and those that are not have an output weight $w$ vanishing to zero (see the small particles in the middle of figures 2.a and 2.b).
 
+
 Global convergence was obtained even with as few as 3 particles. Yet the amount of overparametrization seems to influence stability during training. When there are many particles, the weights move slower and smoother than with just a few particles (see the difference between figures 2.a and 2.b). This motivates a more careful study of the amount of overparametrization needed to achieve global convergence in section 5.2.
 
 \subsection{How much overparametrization is needed?}
 
+In the infinite overparametrization limit, gradient descent should converge to the global minimum under proper initialization. We may wonder if this asymptotic result already has an effect for a reasonable number of particles. We can reproduce the first experiment in a more quantitative way to measure this effect. We now consider dimension $d=50$, and we generate the data with a neural network with $M=10$ hidden units.
+
+We train a neural network with $k$ hidden units with SGD on data generated by this first network. We want to measure the value of $k$ above which we have global convergence. Since the data is generated by another one-hidden layer neural network, the global minimum of the loss is zero. We train the network (initialized in the same way as in section 5.1) with new samples at each gradient step. The train loss is computed on the rolling set of the last 1,000 training samples and is only here for illustration. The test loss is estimated on a new set of 10,000 samples.
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=7.5cm]{over.png}
+  \caption{Convergence to zero loss with 20 particles}
+  \label{fig:sub3}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=7.5cm]{under.png}
+  \caption{Convergence to non zero loss with 5 particles}
+  \label{fig:sub4}
+\end{subfigure}%
+  \caption{Training with ReLU in overparametrization and underparametrization regimes}
+\end{figure}
+
+
+When $k < M$, the loss cannot converge to zero in general so it must converge to a local minimum (see figure 3.b). In the overparametrization limit (see figure 3.a), the loss converges to zero, but in practice we must stop the optimization at some point, plus the loss is only estimated through sampling, so we only get a very small test loss. \\
+
+We repete the whole experiment (including drawing a new generative network) 5 times, for different values of $k$, both in the case of ReLU and sigmoid activation functions. We plot the geometric mean of the obtained losses for each value of $k$ in figures 4 and 5.
+
+In the two plots we see a fall in the loss for $k$ around $M=10$. It is like a phase transition. For low values of $k$, the loss can only go to a non zero minimum and provide a solution which quality depends on the structure of the true network. For high values of $k$, optimization is slower, and since we stopped it after the same number of steps for different $k$, it might explain why the loss goes up for $k \geq 30$ in figure 4. Interestingly, in both figures 4 and 5, the excess loss has a higher variance for $k$ near the true number of particles $M$, and this variance is reduced for higher values of $k$. It could mean that we are in a regime where the convergence is more deterministic and stops depending on the generative network and on the initializations.\\
+
+This supports the remark of \cite{chizat2018global} that only a slight overparametrization is needed to find a global minimizer, even though we did not manage to reproduce the sharp transition that they obtained in the same experiment.
+
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{lossr.png}
+  \caption{Excess loss at convergence for an increasing number of particles with ReLU}
+  \label{fig:3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{loss.png}
+  \caption{Excess loss at convergence for an increasing number of particles with sigmoid}
+  \label{fig:3}
+\end{figure}
+
+
 \subsection{Lazy or active training?}
 
-Added: Illustrate lazy training \cite{chizat:hal-01945578}
+In section 5.1, in the case of ReLU, we noticed that the radius of the sphere where we initialized all the particles had an influence on the convergence. Here we try to make this statement more precise. We get back to dimension 2 and generate the data with $M=3$ hidden units, with parameters on the sphere of radius $r=2$. We consider overparametrized neural networks with $k=20$ particles initialized on the sphere of radius $r_0$ and we study the influence of $r_0$.
 
-faire 2 gifs avec active / lazy training en changeant un paramètre.
+We plot (see figure 6) the test loss during training with SGD and a fixed number of samples (500,000) and fixed learning rate. The whole experiment is repeted 5 times so we plot the geometric mean, minimum and maximum of the loss (in log scale). The best choice of $r_0$ seems to be 0.05 like in our first experiment. For a big value $r_0 = 10$, training is very slow and unstable. For $r_0$ too small, the variance between the experiments was too high to conclude anything. It might be explained by the singularity of the ReLU function around zero.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=9cm]{radius.png}
+  \caption{Influence of $r_0$ through training with $k=20$ particles}
+  \label{fig:3}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=5cm]{005.png}
+  \caption{Weights trajectory for $r_0=0.05$}
+  \label{fig:sub3}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[height=5cm]{10.png}
+  \caption{Weights trajectory for $r_0=10$}
+  \label{fig:sub4}
+\end{subfigure}%
+  \caption{Two different behaviours in the trajectories of weights with ReLU}
+\end{figure}
+
+Getting back to the visualization in dimension 2, we can witness two very different training regimes depending on the choice of $r_0$. For small values of $r_0$ (see figure 7.a), all particles \textit{spring out} from the origin and then converge to the global optimum. For $r_0=10$, the particles only move on lines passing at the origin (see figure 7.b). It means that the only weights moving are the output weights $w_j$, and we somehow get back to the convex optimization problem with $L^2$ regularization: sampling many random hidden units and training only the output weights, which proved to be limited.\\
+
+
+
+These observations are related, but not identical to the ones recently made by  \cite{chizat:hal-01945578}. They explain several recent results on global convergence of overparametrized neural networks by an implicit choice in the scaling of some parameters of the networks. Some conditions on this scaling lead to a particular training regime that they call \textit{lazy training}. In this case all the weights of the model stay close to their initialization, so that we can get strong convergence guarantees. But these models do not generalize well. Obviously, this is not what happens when we usually train a neural network.
+
+In particular, they illustrate this phenomenon with one-hidden layer ReLU neural networks, by changing the variance of the initial normal distribution of weights. When the variance is high, all weights stay almost fixed. When it is low, the weights move and the model generalizes well.
+
 
 \section{Conclusion}
 
-Main body (~10 pages) : 
-Presentation of the method(s). 
-Theoretical guarantees. 
-Numerics. 
+Convex neural networks is a way to formulate the learning process of an overparametrized one-hidden layer neural network as a convex problem. It trades a non convex problem in finite dimension for a convex problem in infinite dimension. When the model is properly constrained, that is, when we set an $L^1$ norm constraint on the output weights, then the number of hidden units with non zero weight is finite. This model has good generalization properties, and in particular its sample complexity has a good scaling with the dimension.
 
-Conclusion and perspective (~1 page)
-Summary of the result obtained: pros and cons (limitation, problems, error in the articles, etc)
-Possible improvement/extension
+However, optimizing in infinite dimension is hard in general. A natural choice of algorithm for this kind of constrained problems is conditional gradient. It turns out that in the case of convex neural networks, the subproblem of adding a new hidden unit is provably NP-hard for standard choices of activation functions. Hence solving the training problem of convex neural networks with exact conditional gradient is intractable. Whether there exists a polynomial time approximation to this subproblem preserving the generalization bounds is still an open question.
+
+We may consider another approach to efficiently optimize neural networks. Gradient descent can be seen as a continuous time process in the space of measures. Results from optimal transport provide global optimality guarantees for gradient descent in the overparametrization limit, under initialization and homogeneity conditions. The number of hidden units needed to reach this asymptotic result and the influence of the initialization can be estimated empirically. There still lacks theoretical results quantifying this behaviour, and more generally, all the results on one-hidden layer neural networks are far from covering the variety of models used in practice.
 
 \newpage
 
