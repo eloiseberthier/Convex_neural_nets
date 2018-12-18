@@ -1,5 +1,12 @@
 \begin{thebibliography}{}
 
+\bibitem[Bach, 2016]{video}
+Bach, F. (2016).
+\newblock Convex (and tractable?) formulations for single hidden layer neural
+  networks (oral presentation).
+\newblock In {\em Applied Harmonic Analysis, Massive Data Sets, Machine
+  Learning, and Signal Processing workshop}.
+
 \bibitem[Bach, 2017]{bach2017breaking}
 Bach, F. (2017).
 \newblock Breaking the curse of dimensionality with convex neural networks.

@@ -61,7 +61,7 @@
 
 \vspace{12em}
 
-\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension in hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of overparametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the overparametrization regime and the influence of the initialization.
+\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden-layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension in hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of over-parametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the over-parametrization regime and the influence of the initialization.
 
 \newpage
 
@@ -82,11 +82,11 @@ In \cite{haeffele2017global} are studied conditions under which the optimization
 
 There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
 
-In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, and which is the case when the data is on a sphere.
+In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, which is the case when the data is on a sphere.
 
 However, \cite{chizat:hal-01945578} notice that part of these results may be explained by a specific \textit{lazy} training setting which does not reflect practical deep learning applications. \\
 
-In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
+In this report, we concentrate on another approach called \textit{convex neural networks}. The core idea was introduced by \cite{bengio2006convex} and focuses on one-hidden-layer neural networks. Instead of optimizing the weights of a network with a fixed number of hidden units, we could consider the equivalent problem of optimizing on the set of all the possible hidden unit functions. The training problem is convex with respect to the parameters of the model (which are now only the ouput weights).
 
 Of course, while this approach solves the non-convexity issue, it introduces some other difficulties. These are extensively studied in \cite{bach2017breaking}, on which we will mainly focus in this report. A complete analysis of the generalization performance of convex neural networks is derived, in particular showing that high-dimensional non-linear variable selection may be achieved, without any strong assumption regarding the data. Yet this approach requires to solve a convex problem in infinite dimension and is only possible if the non-convex subproblem of adding a new hidden unit can be solved efficiently. Finding a polynomial-time algorithm approximating well this subproblem induced by the conditional gradient method is still an open question.
 
@@ -95,8 +95,8 @@ Of course, while this approach solves the non-convexity issue, it introduces som
 Looking at all these different approaches, we may notice some recurrent patterns in the assumptions that are commonly made:
 
 \begin{itemize}
-\item \textit{one hidden-layer models}: most of the articles focus on simple neural network models, that already include a wide variety of classical supervised learning configurations, but do not directly cover deep neural networks.
-\item \textit{over parametrization}: all the good generalization properties are derived in the case of an over parametrized model, yet the key question is \textit{how much} over parametrization is needed.
+\item \textit{one-hidden-layer models}: most of the articles focus on simple neural network models, that already include a wide variety of classical supervised learning configurations, but do not directly cover deep neural networks.
+\item \textit{over-parametrization}: all the good generalization properties are derived in the case of an over-parametrized model, yet the key question is \textit{how much} over-parametrization is needed.
 \item \textit{positive homogeneity}: most of the results are achieved in the case of positively homogeneous activation functions. It could explain the experimental advantage of using ReLU functions over others in deep learning.
 \item \textit{proper initialization}: several articles rely on the conservation of an initial regularity through the optimizing process, for instance using gradient flows, and so emphasize the role of the initialization.
 \end{itemize}
@@ -131,9 +131,9 @@ This problem formulation is from \cite{bengio2006convex}. It is a bit hard to ha
 
 In this problem the penalization term is crucial. Unlike the initial optimization problem where the number of hidden units was fixed, it is now part of the optimization problem. Without any regularization, the solution could have an arbitrary large number (possibly infinite) of non-zero variables $w_j$. We will later see that a proper regularization can ensure a finite number of selected units, and so a finite model.
 
-$\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $w$. Notice that due to these notations, this formulation could hardly be generalized to a greater number of layers.\\
+$\mathcal{W}$ is the space of the output weights, and since it has infinite dimension, it is handled as a space of functions. What makes it a bit entangled is that eventually $\mathcal{W}$ is defined as a space of functions (output layer) of functions (hidden layer) of $x\in \mathcal{X}$, but it can also be seen as a simple vector (in potentially infinite dimension). The vector of activations of the hidden layer for a fixed input $x$ is also an element of $\mathcal{W}$ because it has the same shape as $w$. Notice that due to these notations, this formulation could hardly  generalize to a greater number of layers.\\
 
-For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, which defines two spaces $\mathcal{F}_1$ and $\mathcal{F}_2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}_1$ or $\mathcal{F}_2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $w$.
+For the rest of this report, we will focus on the more general problem formulation in \cite{bach2017breaking}, who defines two spaces $\mathcal{F}_1$ and $\mathcal{F}_2$, for which we do not explicitely define an output Hilbert space $\mathcal{W}$. In fact, we do not actually manipulate the parameters of the neural network, but we will rather directly optimize on end-to-end neural network fonctions $f \in \mathcal{F}_1$ or $\mathcal{F}_2$. To take the penalty into account, we will have to define a notion of norm on these spaces, and discrete Radon measures will now play the role of the output weights $w$.
 
 \subsection{Variation norm}
 
@@ -202,7 +202,7 @@ We use a neural network to approximate an unknown function $f^\star \in \mathbb{
 
 However, we may assume that $f^\star$ has some structure, and that it belongs to some parametric model (e.g affine functions, generative additive models or projection pursuit). Then, for a variety of models, the sample complexity gets polynomial in the dimension. We would like our neural network to adapt to this structure, that is to learn $f^\star$ in the parametric model with an excess risk polynomial in $d$.
 
-It turns out one hidden layer convex neural networks have this adaptivity property when properly constrained. 
+It turns out one-hidden-layer convex neural networks have this adaptivity property when properly constrained. 
 
 \subsection{Error decomposition}
 
@@ -254,7 +254,7 @@ Finally, any Lipschitz-continuous function may be approximated by a function in 
 \emph{[Approximation of Lipschitz-continuous functions on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even 1-Lipschitz function such that for all $x \in  \mathbb{S}^d$, $g(x) \leq 1$. For $\delta$ greater than a constant depending only on $d$, there exists $h\in \mathcal{G}_2$ such that $\gamma_2(g) \leq \delta$ and $\sup_{x \in  \mathbb{S}^d} |h(x) - g(x)| \leq C(d) \delta^{-2/(d+1)} \log(\delta)$.
 \end{proposition}
 
-From these bounds on both estimation and approximation errors, one can derive generalization bounds for various models. One of the main conclusions is that when $f^\star$ depends only on a subspace of dimension $s \leq d$, then we can replace $d$ by $s$ in the generalization bounds only in $\mathcal{F}_1$ and not in $\mathcal{F}_2$. In fact, the dependence on a lower dimensional subspace allows to reduce smoothness requirements from the previous results only in $\mathcal{F}_1$.
+From these bounds on both estimation and approximation errors, one can derive generalization bounds for various models. One of the main conclusions is that when $f^\star$ depends only on a subspace of dimension $s \leq d$, then we can replace $d$ by $s$ in the generalization bounds only in $\mathcal{F}_1$ and not in $\mathcal{F}_2$. In fact, the dependence on a lower dimensional subspace allows to reduce smoothness requirements from the previous result only in $\mathcal{F}_1$.
 
  Therefore, only $\mathcal{F}_1$ is adaptive to structure and \textit{breaks the curse of dimensionality}. Because of this, we will now focus on the properties of $\mathcal{F}_1$ and in particular on how to optimize in this space.
 
@@ -264,7 +264,7 @@ The preceding analysis has stated the good generalization properties of learning
 \begin{equation}
 \min_{f\in \mathcal{F}_1~ s.t. ~ \gamma_{1} (f) \leq \delta}  \hat J(f)
 \end{equation}
- Since the problem is convex, it should be an easy one. However, it is an infinite dimensional problem. We need somehow to project this problem into a finite dimensional problem.
+ Since the problem is convex, it should be an easy one. However, it is an infinite dimensional problem. We need somehow to project this problem into a simpler finite dimensional problem.
  
  
 \subsection{The conditional gradient algorithm}
@@ -280,7 +280,7 @@ The algorithm is as follows. First initialize $f_0$ with any function in  $\math
 This algorithm has a convergence rate of $O(\delta^2 /t)$. Moreover, at each time step $t$, $f_t$ is a convex combination of $t$ extreme points of $\mathcal{F}_1^\delta$. Due to the $\ell^1$ penalization, the extreme points of $\mathcal{F}_1^\delta$ are sparse vectors (single neurons) and so $\mathcal{F}_1^\delta$ is the convex hull of functions $x \mapsto \pm \delta  (v^\top x)^\alpha_{+}$, for $v \in \mathcal{V}$.\\
 
 
-The algorithm can be applied in $\mathcal{F}_1$ with $J(f) = \mathbb{E}\left[(f(x) - g(x))^2\right]$ to find functions $f_t$ supported by $t$ basis functions such that $\mathbb{E}\left[(f(x) - g(x))^2\right] = O(\gamma_1(g) /t)$. Any function $g \in \mathcal{F}_1$ can be approximated with an error $\varepsilon$ with $t = O(\gamma_1(g)^2 /\varepsilon^2)$ hidden units. \cite{bach2017breaking} provides a slightly better scaling in $\varepsilon$ using convex neural networks with ReLU activation functions.
+The algorithm can be applied in $\mathcal{F}_1$ with $J(f) = \mathbb{E}\left[(f(x) - g(x))^2\right]$ to find functions $f_t$ supported by $t$ basis functions such that $\mathbb{E}\left[(f(x) - g(x))^2\right] = O(\gamma_1(g) /t)$. Hence any function $g \in \mathcal{F}_1$ can be approximated with an error $\varepsilon$ with $t = O(\gamma_1(g)^2 /\varepsilon^2)$ hidden units. \cite{bach2017breaking} provides a slightly better scaling in $\varepsilon$ using convex neural networks with ReLU activation functions.
 
 \subsection{The problem with Frank-Wolfe}
 
@@ -294,7 +294,7 @@ For $\alpha = 0$, it corresponds to the hard-thresholding activation function. T
 \begin{equation}
 \max_{v \in \mathbb{R}^{d+1}} \sum_{i\in I_+} |y_i| \cdot \mathbf{1}_{v^\top x_i> 0}  - \sum_{i\in I_-} |y_i| \cdot \mathbf{1}_{v^\top x_i> 0}
 \end{equation}
-where $I_+ = \left\{i, y_i \geq 0 \right\}$ and $I_- = \left\{i, y_i < 0 \right\}$. This problem is equivalent to to finding an hyperplane minimizing a weighted misclassification error. It is known to be NP-hard in general, and one cannot find a constant-factor polynomial approximation to this problem.\\
+where $I_+ = \left\{i, y_i \geq 0 \right\}$ and $I_- = \left\{i, y_i < 0 \right\}$. This problem is again equivalent to finding an hyperplane minimizing a weighted misclassification error. It is known to be NP-hard, and one cannot find a constant-factor polynomial approximation to this problem.\\
 
 For $\alpha = 1$ (ReLU activation functions), it is equivalent to:
 \begin{equation}
@@ -304,7 +304,7 @@ It can be reformulated using convex duality as the maximization of the Hausdorff
 
 However, there could be weaker relaxations that would preserve the generalization bounds in part 3. \cite{bach2017breaking} provides some sufficient conditions for the existence of polynomial time algorithms with the same generalization bounds, but this question is left open.\\
 
-We can now formulate the kind of tradeoff induced by convex neural networks. They transform the non-convex problem of optimizing a neural network into the convex problem of optimizing a convex neural network, yet in infinite dimension. With a proper constraint on the variation norm, convex neural networks are adaptive to structure. But the subproblem of adding a new hidden layer in the conditional gradient algorithm is computationally intractable. One might also consider other optimization methods.
+We can now formulate the kind of trade-off induced by convex neural networks. They transform the non-convex problem of optimizing a neural network into the convex problem of optimizing a convex neural network, yet in infinite dimension. With a proper constraint on the variation norm, convex neural networks are adaptive to structure. But the subproblem of adding a new hidden layer in the conditional gradient algorithm is computationally intractable. One might also consider other optimization methods.
 
 
 \subsection{An Approach using Particle Gradient Flow}
@@ -351,9 +351,9 @@ In the following two sections we try to reproduce the experiments led by \cite{c
 
 \subsubsection*{Experimental settings}
 
-In the case of ReLU, the training data is normally distributed in dimension 2, and the labels are generated with a one-hidden layer neural network with 3 or 4 neurons. Its weights are also normally distributed.
+In the case of ReLU, the training data is normally distributed in dimension 2, and the labels are generated with a one-hidden-layer neural network with 3 or 4 neurons. Its weights are also normally distributed.
 
-We perform training of another one-hidden layer network with $k=15$ particles. Its weights are initialized on a small sphere around 0. We minimize the square loss without penalization with SGD, so the global optimum is 0.
+We perform training of another one-hidden-layer network with $k=15$ particles. Its weights are initialized on a small sphere around 0. We minimize the square loss without penalization with SGD, so the global optimum is 0.
 
 Each particle is represented (see figure 1) at time $t$ by a position $|w(t)| v(t) \in \mathbb{R}^2$ (the bias is not displayed). Particles near the center have less importance. We plot in red the weights of the generative network, and in blue the weights of the one we optimize. Trajectories are displayed in grey.\\
 
@@ -402,20 +402,20 @@ Each particle is represented (see figure 2) by a position $v(t) \in \mathbb{R}^2
 
 For the ReLU experiment, the most decisive factor to get global convergence is the initialization of weights. The initial weights of each particle are normally distributed around zero, and then rescaled to a fixed norm $r_0$. The norm of the weights for each particle of the generative network are set to $r$. When $r_0 \ll r$, we often get global convergence. In figure 1, $r = 2$ and $r_0 = 0.05$. At initialization, all particles are located at the center and quickly get out during the first training steps. When $r_0$ in not small compared to $r$, we always obtained poor results. We will discuss more this remark in section 5.3.
 
-Even when $r_0 \ll r$, the weights sometimes converge to a local minimum (see figure 1.b). This does not seem to be related to a lack of overparametrization, as in both experiments we considered 15 particles. In fact, the number of particles alone had little effect in this experiment to explain whether there was global convergence or not. It might only be related to the relative difficulty of some generative network configurations which may require much more particles.\\
+Even when $r_0 \ll r$, the weights sometimes converge to a local minimum (see figure 1.b). This does not seem to be related to a lack of over-parametrization, as in both experiments we considered 15 particles. In fact, the number of particles alone had little effect in this experiment to explain whether there was global convergence or not. It might only be related to the relative difficulty of some generative network configurations which may require much more particles.\\
 
 For the sigmoid experiment, we noticed that the initialization of all output layer weights $w$ to 0 brings some separation of the particles at the beginning of training. Roughly half of them get negative weights and the other half positive weights, and this does not change through training.
 
 In our experiment the generative network had 2 hidden units. We always got convergence to the global minimum: all particles are on the black lines, and those that are not have an output weight $w$ vanishing to zero (see the small particles in the middle of figures 2.a and 2.b).
 
 
-Global convergence was obtained even with as few as 3 particles. Yet the amount of overparametrization seems to influence stability during training. When there are many particles, the weights move slower and smoother than with just a few particles (see the difference between figures 2.a and 2.b). This motivates a more careful study of the amount of overparametrization needed to achieve global convergence in section 5.2.
+Global convergence was obtained even with as few as 3 particles. Yet the amount of over-parametrization seems to influence stability during training. When there are many particles, the weights move slower and smoother than with just a few particles (see the difference between figures 2.a and 2.b). This motivates a more careful study of the amount of over-parametrization needed to achieve global convergence in section 5.2.
 
-\subsection{How much overparametrization is needed?}
+\subsection{How much over-parametrization is needed?}
 
-In the infinite overparametrization limit, gradient descent should converge to the global minimum under proper initialization. We may wonder if this asymptotic result already has an effect for a reasonable number of particles. We can reproduce the first experiment in a more quantitative way to measure this effect. We now consider dimension $d=50$, and we generate the data with a neural network with $M=10$ hidden units.
+In the infinite over-parametrization limit, gradient descent should converge to the global minimum under proper initialization. We may wonder if this asymptotic result already has an effect for a reasonable number of particles. We can reproduce the first experiment in a more quantitative way to measure this effect. We now consider dimension $d=50$, and we generate the data with a neural network with $M=10$ hidden units.
 
-We train a neural network with $k$ hidden units with SGD on data generated by this first network. We want to measure the value of $k$ above which we have global convergence. Since the data is generated by another one-hidden layer neural network, the global minimum of the loss is zero. We train the network (initialized in the same way as in section 5.1) with new samples at each gradient step. The train loss is computed on the rolling set of the last 1,000 training samples and is only here for illustration. The test loss is estimated on a new set of 10,000 samples.
+We train a neural network with $k$ hidden units with SGD on data generated by this first network. We want to measure the value of $k$ above which we have global convergence. Since the data is generated by another one-hidden-layer neural network, the global minimum of the loss is zero. We train the network (initialized in the same way as in section 5.1) with new samples at each gradient step. The train loss is computed on the rolling set of the last 1,000 training samples and is only here for illustration. The test loss is estimated on a single set of 10,000 samples.
 
 
 \begin{figure}[H]
@@ -432,17 +432,17 @@ We train a neural network with $k$ hidden units with SGD on data generated by th
   \caption{Convergence to non zero loss with 5 particles}
   \label{fig:sub4}
 \end{subfigure}%
-  \caption{Training with ReLU in overparametrization and underparametrization regimes}
+  \caption{Training with ReLU in over-parametrization and under-parametrization regimes}
 \end{figure}
 
 
-When $k < M$, the loss cannot converge to zero in general so it must converge to a local minimum (see figure 3.b). In the overparametrization limit (see figure 3.a), the loss converges to zero, but in practice we must stop the optimization at some point, plus the loss is only estimated through sampling, so we only get a very small test loss. \\
+When $k < M$, the loss cannot converge to zero in general so it must converge to a local minimum (see figure 3.b). In the over-parametrization limit (see figure 3.a), the loss converges to zero, but in practice we must stop the optimization at some point, plus the loss is only estimated through sampling, so we only get a very small test loss. \\
 
 We repete the whole experiment (including drawing a new generative network) 5 times, for different values of $k$, both in the case of ReLU and sigmoid activation functions. We plot the geometric mean of the obtained losses for each value of $k$ in figures 4 and 5.
 
-In the two plots we see a fall in the loss for $k$ around $M=10$. It is like a phase transition. For low values of $k$, the loss can only go to a non zero minimum and provide a solution which quality depends on the structure of the true network. For high values of $k$, optimization is slower, and since we stopped it after the same number of steps for different $k$, it might explain why the loss goes up for $k \geq 30$ in figure 4. Interestingly, in both figures 4 and 5, the excess loss has a higher variance for $k$ near the true number of particles $M$, and this variance is reduced for higher values of $k$. It could mean that we are in a regime where the convergence is more deterministic and stops depending on the generative network and on the initializations.\\
+In the two plots we see a fall in the loss for $k$ around $M=10$. It is like a phase transition. For low values of $k$, the loss can only go to a non zero minimum and provide a solution which quality depends on the structure of the true network. For high values of $k$, optimization is slower, and since we stopped it after the same number of steps for different $k$, it might explain why the loss goes up for $k \geq 30$ in figure 4. Interestingly, in both figures 4 and 5, the excess loss has a higher variance for $k$ near the true number of particles $M$, and this variance is reduced for higher values of $k$. It could mean that high values of $k$ define a regime where the convergence is more deterministic and stops depending on the generative network and on the initializations.\\
 
-This supports the remark of \cite{chizat2018global} that only a slight overparametrization is needed to find a global minimizer, even though we did not manage to reproduce the sharp transition that they obtained in the same experiment.
+This supports the remark of \cite{chizat2018global} that only a slight over-parametrization is needed to find a global minimizer, even though we did not manage to reproduce the sharp transition that they obtained in the same experiment.
 
 
 
@@ -464,7 +464,7 @@ This supports the remark of \cite{chizat2018global} that only a slight overparam
 
 \subsection{Lazy or active training?}
 
-In section 5.1, in the case of ReLU, we noticed that the radius of the sphere where we initialized all the particles had an influence on the convergence. Here we try to make this statement more precise. We get back to dimension 2 and generate the data with $M=3$ hidden units, with parameters on the sphere of radius $r=2$. We consider overparametrized neural networks with $k=20$ particles initialized on the sphere of radius $r_0$ and we study the influence of $r_0$.
+In section 5.1, in the case of ReLU, we noticed that the radius of the sphere where we initialized all the particles had an influence on the convergence. Here we try to make this statement more precise. We get back to dimension 2 and generate the data with $M=3$ hidden units, with parameters on the sphere of radius $r=2$. We consider over-parametrized neural networks with $k=20$ particles initialized on the sphere of radius $r_0$ and we study the influence of $r_0$.
 
 We plot (see figure 6) the test loss during training with SGD and a fixed number of samples (500,000) and fixed learning rate. The whole experiment is repeted 5 times so we plot the geometric mean, minimum and maximum of the loss (in log scale). The best choice of $r_0$ seems to be 0.05 like in our first experiment. For a big value $r_0 = 10$, training is very slow and unstable. For $r_0$ too small, the variance between the experiments was too high to conclude anything. It might be explained by the singularity of the ReLU function around zero.
 
@@ -496,25 +496,25 @@ Getting back to the visualization in dimension 2, we can witness two very differ
 
 
 
-These observations are related, but not identical to the ones recently made by  \cite{chizat:hal-01945578}. They explain several recent results on global convergence of overparametrized neural networks by an implicit choice in the scaling of some parameters of the networks. Some conditions on this scaling lead to a particular training regime that they call \textit{lazy training}. In this case all the weights of the model stay close to their initialization, so that we can get strong convergence guarantees. But these models do not generalize well. Obviously, this is not what happens when we usually train a neural network.
+These observations are related, but not identical to the ones recently made by  \cite{chizat:hal-01945578}. They explain several recent results on global convergence of over-parametrized neural networks by an implicit choice in the scaling of some parameters of the networks. Some conditions on this scaling lead to a particular training regime that they call \textit{lazy training}. In this case all the weights of the model stay close to their initialization, so that we can get strong convergence guarantees. But these models do not generalize well. Obviously, this is not what happens when we usually train a neural network.
 
-In particular, they illustrate this phenomenon with one-hidden layer ReLU neural networks, by changing the variance of the initial normal distribution of weights. When the variance is high, all weights stay almost fixed. When it is low, the weights move and the model generalizes well.
+In particular, they illustrate this phenomenon with one-hidden-layer ReLU neural networks, by changing the variance of the initial normal distribution of weights. When the variance is high, all weights stay almost fixed. When it is low, the weights move and the model generalizes well.
 
 
 \section{Conclusion}
 
-Convex neural networks is a way to formulate the learning process of an overparametrized one-hidden layer neural network as a convex problem. It trades a non convex problem in finite dimension for a convex problem in infinite dimension. When the model is properly constrained, that is, when we set an $L^1$ norm constraint on the output weights, then the number of hidden units with non zero weight is finite. This model has good generalization properties, and in particular its sample complexity has a good scaling with the dimension.
+Convex neural networks is a way to formulate the learning process of an over-parametrized one-hidden-layer neural network as a convex problem. It trades a non convex problem in finite dimension for a convex problem in infinite dimension. When the model is properly constrained, that is, when we set an $L^1$ norm constraint on the output weights, then the number of hidden units with non zero weight is finite. This model has good generalization properties, and in particular its sample complexity has a good scaling with the dimension.
 
 However, optimizing in infinite dimension is hard in general. A natural choice of algorithm for this kind of constrained problems is conditional gradient. It turns out that in the case of convex neural networks, the subproblem of adding a new hidden unit is provably NP-hard for standard choices of activation functions. Hence solving the training problem of convex neural networks with exact conditional gradient is intractable. Whether there exists a polynomial time approximation to this subproblem preserving the generalization bounds is still an open question.
 
-We may consider another approach to efficiently optimize neural networks. Gradient descent can be seen as a continuous time process in the space of measures. Results from optimal transport provide global optimality guarantees for gradient descent in the overparametrization limit, under initialization and homogeneity conditions. The number of hidden units needed to reach this asymptotic result and the influence of the initialization can be estimated empirically. There still lacks theoretical results quantifying this behaviour, and more generally, all the results on one-hidden layer neural networks are far from covering the variety of models used in practice.
+We may consider another approach to efficiently optimize neural networks. Gradient descent can be seen as a continuous time process in the space of measures. Results from optimal transport provide global optimality guarantees for gradient descent in the over-parametrization limit, under initialization and homogeneity conditions. The number of hidden units needed to reach this asymptotic result and the influence of the initialization can be estimated empirically. There still lacks theoretical results quantifying this behaviour, and more generally, all the results on one-hidden-layer neural networks are far from covering the variety of models used in practice.
 
 \newpage
 
 \bibliographystyle{apalike}
 \bibliography{biblio.bib}
 
- 
+ \nocite{video}
 
 
 

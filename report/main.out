@@ -15,6 +15,6 @@
 \BOOKMARK [2][-]{subsection.4.3}{An Approach using Particle Gradient Flow}{section.4}% 15
 \BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 16
 \BOOKMARK [2][-]{subsection.5.1}{Particle gradient flow in dimension 2}{section.5}% 17
-\BOOKMARK [2][-]{subsection.5.2}{How much overparametrization is needed?}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{How much over-parametrization is needed?}{section.5}% 18
 \BOOKMARK [2][-]{subsection.5.3}{Lazy or active training?}{section.5}% 19
 \BOOKMARK [1][-]{section.6}{Conclusion}{}% 20
