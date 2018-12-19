@@ -61,7 +61,7 @@
 
 \vspace{12em}
 
-\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden-layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension in hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of over-parametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the over-parametrization regime and the influence of the initialization.
+\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden-layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension is hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of over-parametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the over-parametrization regime and the influence of the initialization.
 
 \newpage
 
@@ -80,7 +80,7 @@ Some rely on convex relaxations of the original optimization problem. \cite{zhan
 
 In \cite{haeffele2017global} are studied conditions under which the optimization landscape for the non-convex optimization problem is such that all critical points are either global minimizers or saddle points. \cite{visualloss} provide a tool to visualize the loss surface along random directions near the optimal parameters.
 
-There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent linearly converges to a global optimum.
+There is also a series of some very recent contributions on the problem: \cite{du2018agradient}, \cite{du2018bgradient} and \cite{zou2018stochastic}. They rely on the analysis of the dynamics of the prediction space rather than of the parameter space, the former being governed by the spectral property of a Gram matrix. If the data is \textit{not degenerate}, this Gram matrix’s least eigenvalue is lower bounded, and randomly initialized gradient descent converges linearly to a global optimum.
 
 In the infinite-width limit, \cite{jacot2018neural} relate the evolution of a neural network function to a kernel that they call the \textit{neural tangent kernel}. Convergence to a global minimum can then be related to the positive-definiteness of the limiting kernel, which is the case when the data is on a sphere.
 
@@ -125,9 +125,9 @@ We can define the following problem:
 \begin{lemma}
 Problem (1) is a convex minimization problem.
 \end{lemma}
-The proof is straightforward: any Hilbert space $\mathcal{W}$ is convex, $ \ell(w \cdot h(x_i), y_i)$ is convex in $w$ and by additivity the objective function also is.\\
+The proof is straightforward: any Hilbert space $\mathcal{W}$ is convex, $w \mapsto \ell(w \cdot h(x_i), y_i)$ is convex and by additivity the objective function also is.\\
 
-This problem formulation is from \cite{bengio2006convex}. It is a bit hard to handle as it introduces many notations that are not all explicit. Still it provides an intuitive idea of the problem we want to define: considering all the possible hidden units we could pick, how to combine them to make a good prediction, that is, how to choose the output weight $w$ to minimize $\mathcal{C}$. 
+This problem formulation is from \cite{bengio2006convex}. It is a bit hard to handle as it introduces many notations that are not all explicit. Still it provides an intuitive idea of the problem we want to define: considering all the possible hidden units we could pick, how would we combine them to make a good prediction, that is, how to choose the output weight $w$ to minimize $\mathcal{C}$. 
 
 In this problem the penalization term is crucial. Unlike the initial optimization problem where the number of hidden units was fixed, it is now part of the optimization problem. Without any regularization, the solution could have an arbitrary large number (possibly infinite) of non-zero variables $w_j$. We will later see that a proper regularization can ensure a finite number of selected units, and so a finite model.
 
