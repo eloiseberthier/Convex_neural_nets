@@ -59,9 +59,9 @@
 
 \everymath{\displaystyle}
 
-\vspace{12em}
+\vspace{14em}
 
-\abstract{Training a neural network is a non convex problem and in general gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden-layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension is hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of over-parametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the over-parametrization regime and the influence of the initialization.
+\abstract{Training a neural network is a non convex problem and generally gradient descent algorithms only return local minima. Hence it may yield non reproductible results. One can formulate the empirical risk minimization as a convex problem for one-hidden-layer neural networks with infinitely many hidden units. When properly penalized, these neural networks have strong generalization properties and are adaptive to structure on the data. However, optimizing in infinite dimension is hard and for instance the conditional gradient algorithm has a non-polynomial complexity. We follow a recent approach from optimal transport which provides global optimality guarantees for the gradient descent algorithms in the case of over-parametrized neural networks, under simple conditions on the initialization. We provide numerical experiments to visualize this phenomenon and to study the over-parametrization regime and the influence of the initialization.
 
 \newpage
 
@@ -90,9 +90,9 @@ In this report, we concentrate on another approach called \textit{convex neural 
 
 Of course, while this approach solves the non-convexity issue, it introduces some other difficulties. These are extensively studied in \cite{bach2017breaking}, on which we will mainly focus in this report. A complete analysis of the generalization performance of convex neural networks is derived, in particular showing that high-dimensional non-linear variable selection may be achieved, without any strong assumption regarding the data. Yet this approach requires to solve a convex problem in infinite dimension and is only possible if the non-convex subproblem of adding a new hidden unit can be solved efficiently. Finding a polynomial-time algorithm approximating well this subproblem induced by the conditional gradient method is still an open question.
 
-\cite{chizat2018global} focus on solving the same convex problem, but avoid the potentially NP-hard problem of optimizing with conditional gradient. Instead, they discretize the unknown measure as a mixture of particles. This approach is inspired by optimal transport and brings strong asymptotical global optimality guarantees for gradient flow optimization. It also provides simple numerical experiments.\\
+\cite{chizat2018global} focus on solving the same convex problem, but avoid the potentially NP-hard problem of optimizing with conditional gradient. Instead, they discretize the unknown measure as a mixture of particles. This approach is inspired by optimal transport and brings strong asymptotic global optimality guarantees for gradient flow optimization. It also provides simple numerical experiments.\\
 
-Looking at all these different approaches, we may notice some recurrent patterns in the assumptions that are commonly made:
+Looking at these different approaches, we may notice some recurrent patterns in the assumptions that are commonly made:
 
 \begin{itemize}
 \item \textit{one-hidden-layer models}: most of the articles focus on simple neural network models, that already include a wide variety of classical supervised learning configurations, but do not directly cover deep neural networks.
@@ -113,7 +113,7 @@ We will mainly consider a fixed non-decreasing and positively homogeneous  activ
 
 For a fixed value of $k$, training a neural network is an empirical risk minimization problem: $\min_{w, v} \frac{1}{n} \sum_{i=1}^n \ell(f_{w, v}(x_i), y_i) + \Omega(w, v)$, where $\ell$ is a smooth convex loss function (convex in its first argument) and $\Omega$ a convex regularization function, and $(x_i, y_i)$ the observations in $\mathcal{X} \times \mathbb{R}$. This is not a convex problem because of the non-convexity of the prediction function.\\
 
-Now consider the set $\mathcal{F}_\mathcal{V}$ of all the possible hidden unit functions $\varphi_v : \mathcal{X} \rightarrow \mathbb{R}$, with $\mathcal{X}$ any measurable space. We will call it the set of basis functions. It is parametrized by the compact topological space $\mathcal{V}$ of all possible hidden unit weight vectors. We assume that for all $x \in \mathcal{X}$, the functions $v \mapsto \varphi_v(x)$ are continuous. To represent any affine function, $\mathcal{V}$ has dimension $d + 1$ for inputs in $\mathcal{X}$ of dimension $d$.
+Now consider the set $\mathcal{F}_\mathcal{V}$ of all the possible hidden unit functions $\varphi_v : \mathcal{X} \rightarrow \mathbb{R},~ x\mapsto \sigma(v^\top x)$, with $\mathcal{X}$ any measurable space. We will call it the set of basis functions. It is parametrized by the compact topological space $\mathcal{V}$ of all possible hidden unit weight vectors. We assume that for all $x \in \mathcal{X}$, the functions $v \mapsto \varphi_v(x)$ are continuous. To represent any affine function, $\mathcal{V}$ has dimension $d + 1$ for inputs in $\mathcal{X}$ of dimension $d$.
 
 Let $\mathcal{W}$ be the Hilbert space of functions from $\mathcal{F}_\mathcal{V}$ to $\mathbb{R}$, with $\cdot$ an inner product. For any $x \in \mathcal{X}$, we define $h(x)$ as the function that maps any $\varphi_v \in \mathcal{F}_\mathcal{V}$ to $\varphi_v(x)$. $h(x)$ is an element of $\mathcal{W}$. $h(x)$ can be seen as the vector of activations of the hidden units when we observe $x$ as input. An element $w$ of $\mathcal{W}$ can also be understood as the output weights vector in a neural network. We extend the definition of $\Omega$ to be a convex regularization functional from $\mathcal{W}$ to $\mathbb{R}$.  \\
 
@@ -154,7 +154,7 @@ where $\mu$ is a signed Radon measure on $\mathcal{V}$ with finite total variati
 \end{definition}
 
 \begin{definition}
-The variation norm of $f \in \mathcal{F}_1$ with respect to $\mathcal{V}$ is the infimum of $|\mu|(\mathcal{V})$ over all decompositions of $f$ as $f= \int_\mathcal{V} \varphi_v\textnormal{d}\mu(v)$. It is a norm $\gamma_1$ on $\mathcal{F}_1$.
+The variation norm $\gamma_1$ of $f \in \mathcal{F}_1$ with respect to $\mathcal{V}$ is the infimum of $|\mu|(\mathcal{V})$ over all decompositions of $f$ as $f= \int_\mathcal{V} \varphi_v\textnormal{d}\mu(v)$. It is a norm on $\mathcal{F}_1$.
 \end{definition}
 
 If we assume in this definition that $\mu$ must have a density with respect to $\tau$ with full support on $\mathcal{V}$, then $\gamma_1(f)$ is the infimum of $|\mu|(\mathcal{V}) = \int_\mathcal{V} |p(v)| \textnormal{d}\tau(v)$ over all integrable functions $p$ such that $f(x) = \int_\mathcal{V} p(v) \varphi_v(x)\textnormal{d}\tau(v)$. This defines the same norm $\gamma_1(f)$ because all Radon measures are limits of measures with densities.
@@ -163,7 +163,7 @@ If $f$ has a finite number of neurons, $f(x) = \sum_{j=1}^k w_j \varphi_{v_j}(x)
 
 \subsection{Problem formulation in $\mathcal{F}_1$}
 
-We define the convex problem of minimizing a functional $J$ on functions restricted to $\mathcal{\hat X}$ a subset of $\mathcal{X}$, that is:
+We define the convex problem of minimizing a convex functional $J$ on functions restricted to $\mathcal{\hat X}$ a subset of $\mathcal{X}$, that is:
 \begin{equation}
 \min_{f_{|\mathcal{\hat X}} \in \mathbb{R}^\mathcal{\hat X}~ s.t. ~ \gamma_{1|\mathcal{\hat X}} (f_{|\mathcal{\hat X}}) \leq \delta} J(f_{|\mathcal{\hat X}})
 \end{equation}
@@ -173,7 +173,7 @@ This subset will typically be a finite set of observations $x_1,...,x_n$ among a
 
 The following result highlights the role of controling the variation norm.
 
-\begin{theorem}{\emph{[From Carathéodory's theorem for cones]}} If $\mathcal{\hat X}$ has only $n$ elements, the solution $f$ to problem (2) may be decomposed into at most $n$ functions $\varphi_v$, that is, $\mu$ is supported by at most $n$ points of $\mathcal{V}$ in the expression: $$ f(x) = \int_\mathcal{V} \varphi_v(x) \textnormal{d}\mu(v) $$
+\begin{theorem}{\emph{[From Carathéodory's theorem for cones]}} If $\mathcal{\hat X}$ has only $n$ elements, the solution $f$ to problem (2) may be decomposed into at most $n$ functions $\varphi_v$, that is, $\mu$ is supported by at most $n$ points of $\mathcal{V}$ in the expression: $$ f(x) = \int_\mathcal{V} \varphi_v(x) \textnormal{d}\mu(v) = \sum_{j=1}^n \varphi_j(x) w_j$$
 \end{theorem}
 
 However, we do not know in advance which will be these $n$ functions, whereas if we consider the representer theorem for RKHS, the functions are known to be kernels centered in the observations.
@@ -187,10 +187,10 @@ We previously noticed that in the definition of the variation norm, the infimum 
 
 
 \begin{proposition}
-If $\mathcal{V}$ is compact, the space $\mathcal{F}_2$ of functions with finite $\gamma_2$ norm is a reproducing kernel Hilbert space (RKHS), with positive definite kernel $k(x,y)=\int_\mathcal{V} \varphi_v(x) \varphi_v(y) \textnormal{d}\tau(v)$.
+If $\mathcal{V}$ is compact, the space $\mathcal{F}_2$ of functions with finite $\gamma_2$ norm is a reproducing kernel Hilbert space (RKHS), with positive definite kernel $k(x_1, x_2)=\int_\mathcal{V} \varphi_v(x_1) \varphi_v(x_2) \textnormal{d}\tau(v)$.
 \end{proposition}
 
-The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by sampling $m$ i.i.d hidden units $v_1,...,v_m$ and learning a function of the form $\frac{1}{m} \sum_{j=1}^m w_j \varphi_{v_j}(x)$ with a penalization on the $\ell^2$ norm of $w$. When $m$ tends to infinity, the approximate kernel $\hat k(x,y) = \sum_{j=1}^m \varphi_{v_j}(x) \varphi_{v_j}(y)$ tends to $k(x,y)$.
+The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by sampling $m$ i.i.d hidden units $v_1,...,v_m$ and learning a function of the form $\frac{1}{m} \sum_{j=1}^m w_j \varphi_{v_j}(x)$ with a penalization on the $\ell^2$ norm of $w$. When $m$ tends to infinity, the approximate kernel $\hat k(x_1, x_2) = \sum_{j=1}^m \varphi_{v_j}(x_1) \varphi_{v_j}(x_2)$ tends to $k(x_1, x_2)$.
 
 \cite{le2007continuous} provide explicit formulas for the kernel with the hard-thresholding activation fonction, and similar results can be derived for positive homogeneous functions of degree 1 and 2. All the optimization can then be performed in finite dimension, whereas this is not as simple in $\mathcal{F}_1$, as we will see in part 4.
 
@@ -198,7 +198,7 @@ The empirical risk minimization problem in $\mathcal{F}_2$ can be solved by samp
 
 \subsection{Adaptivity to structure}
 
-We use a neural network to approximate an unknown function $f^\star \in \mathbb{R}^d$ that generated some samples that we observe at training time. The weakest assumption we can do on $f^\star$ is Lipschitz continuity (else it would be quite impossible to learn anything). With only this assumption, the sample complexity is exponential in the dimension. It means that it takes $\Omega(\eta^{d})$ samples to learn $f^\star$ with excess risk $\eta$. This is one formulation of the \textit{curse of dimensionality}.
+We use a neural network to approximate an unknown function $f^\star : \mathbb{R}^d \rightarrow \mathbb{R}$ that generated some samples that we observe at training time. The weakest assumption we can do on $f^\star$ is Lipschitz continuity (else it would be quite impossible to learn anything). With only this assumption, the sample complexity is exponential in the dimension. It means that it takes $O(\eta^{d})$ samples to learn $f^\star$ with excess risk $\eta$. This is one formulation of the \textit{curse of dimensionality}.
 
 However, we may assume that $f^\star$ has some structure, and that it belongs to some parametric model (e.g affine functions, generative additive models or projection pursuit). Then, for a variety of models, the sample complexity gets polynomial in the dimension. We would like our neural network to adapt to this structure, that is to learn $f^\star$ in the parametric model with an excess risk polynomial in $d$.
 
@@ -229,7 +229,7 @@ where the terms are respectively the \emph{approximation error}, the \emph{estim
 
 In this part we only consider the generalization error: the sum of estimation error and approximation error, where we generally optimize $\delta$ to get a bound with the best scaling in $d$ and $n$. We will deal with optimization in part 4.\\
 
-The estimation error can be studied with a standard technique using Rademacher complexities. It is not specific to our problem.
+The estimation error can be studied with a standard technique using Rademacher complexities. It is not very specific to our problem.
 
 \begin{proposition}
 The estimation error is bounded in expectation or with high probability by a bound that scales with the dimension as $\sqrt{\log d}$ for $\alpha \geq 1$ and as $\sqrt{d}$ for $\alpha = 0$.
@@ -245,7 +245,7 @@ We may characterize belonging to $\mathcal{F}_1$ and $\mathcal{F}_2$ as a functi
 Here is a sufficient condition to belonging to $\mathcal{G}_2$ and hence to $\mathcal{G}_1$. We express it for ReLU activation functions ($\alpha=1$) but it holds with different bounds for any choice of $\alpha$. \cite{bach2017breaking} proves the following two results using spherical harmonics.
 
 \begin{proposition}
-\emph{[Finite total variation on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even function such that all $i$-th order derivatives exist and are upped bounded in absolute value by a constant for $i \leq d/2 + 3/2$. Then $\gamma_1(g) \leq \gamma_2(g) < +\infty$.
+\emph{[Finite total variation on the sphere]} Let $g : \mathbb{S}^d \rightarrow \mathbb{R}$ an even function such that all $i$-th order derivatives exist and are upper bounded in absolute value by a constant for $i \leq d/2 + 3/2$. Then $\gamma_1(g) \leq \gamma_2(g) < +\infty$.
 \end{proposition}
 
 Finally, any Lipschitz-continuous function may be approximated by a function in $\mathcal{F}_2^\delta$ with a control on its $\gamma_2$ norm. For simplicity, we express the general result in the particular case of $\alpha = 1$ and 1-Lipschitz functions on the sphere.
@@ -264,7 +264,7 @@ The preceding analysis has stated the good generalization properties of learning
 \begin{equation}
 \min_{f\in \mathcal{F}_1~ s.t. ~ \gamma_{1} (f) \leq \delta}  \hat J(f)
 \end{equation}
- Since the problem is convex, it should be an easy one. However, it is an infinite dimensional problem. We need somehow to project this problem into a simpler finite dimensional problem.
+ Since the problem is convex, it should be an easy one. However, it is an infinite dimensional problem. We need to somehow project this problem into a simpler finite dimensional problem.
  
  
 \subsection{The conditional gradient algorithm}
@@ -277,7 +277,7 @@ The algorithm is as follows. First initialize $f_0$ with any function in  $\math
 \item Set $f_{t+1} = (1 - \rho_t) f_t + \rho_t \bar f_t$, with either $\rho_t = \frac{2}{t+1}$ or found with line search.
 \end{enumerate}
 
-This algorithm has a convergence rate of $O(\delta^2 /t)$. Moreover, at each time step $t$, $f_t$ is a convex combination of $t$ extreme points of $\mathcal{F}_1^\delta$. Due to the $\ell^1$ penalization, the extreme points of $\mathcal{F}_1^\delta$ are sparse vectors (single neurons) and so $\mathcal{F}_1^\delta$ is the convex hull of functions $x \mapsto \pm \delta  (v^\top x)^\alpha_{+}$, for $v \in \mathcal{V}$.\\
+This algorithm has a convergence rate of $O(\delta^2 /t)$. Moreover, at each time step $t$, $f_t$ is a convex combination of $t$ extreme points of $\mathcal{F}_1^\delta$. Due to the $\ell^1$ penalization, the extreme points of $\mathcal{F}_1^\delta$ are sparse vectors (single neurons) and so $\mathcal{F}_1^\delta$ is the convex hull of functions $x \mapsto \pm \delta  (v^\top x)^\alpha_{+}$, for $v \in \mathcal{V}$. Hence step one of the algorithm corresponds to adding a new hidden unit.\\
 
 
 The algorithm can be applied in $\mathcal{F}_1$ with $J(f) = \mathbb{E}\left[(f(x) - g(x))^2\right]$ to find functions $f_t$ supported by $t$ basis functions such that $\mathbb{E}\left[(f(x) - g(x))^2\right] = O(\gamma_1(g) /t)$. Hence any function $g \in \mathcal{F}_1$ can be approximated with an error $\varepsilon$ with $t = O(\gamma_1(g)^2 /\varepsilon^2)$ hidden units. \cite{bach2017breaking} provides a slightly better scaling in $\varepsilon$ using convex neural networks with ReLU activation functions.
@@ -318,10 +318,10 @@ Let $\mathcal{M}(\mathcal{V})$ the set of signed measures on the parameter space
 
 This is again an infinite-dimensional problem. The proposed approach consists in discretizing the measure $\mu$ as a mixture of $m$ particles. This is a finite-dimensional problem:
 \begin{equation}
-\min_{w \in \mathbb{R}^m,~u \in \mathcal{V}^m} J_m(w, u):=J\left(  \frac{1}{m} \sum_{i=1}^m w_i \delta_{u_i}\right)
+\min_{w \in \mathbb{R}^m,~v \in \mathcal{V}^m} J_m(w, u):=J\left(  \frac{1}{m} \sum_{i=1}^m w_i \delta_{v^{(i)}}\right)
 \end{equation}
 
-This can be solved with a classical gradient descent algorithm, but since $J_m$ is not convex, it may only converge to a local minimum. We consider the Wasserstein gradient flow, which corresponds to a continuous-time gradient descent on parameters $w$ and $u$. \cite{chizat2018global} prove that when the number of particles tends to infinity and under proper initialization, then the gradient flow converges to a global minimum.\\
+This can be solved with a classical gradient descent algorithm, but since $J_m$ is not convex, it may only converge to a local minimum. We consider the Wasserstein gradient flow, which corresponds to a continuous-time gradient descent on parameters $w$ and $v$. \cite{chizat2018global} prove that when the number of particles tends to infinity and under proper initialization, then the gradient flow converges to a global minimum.\\
 
 By \textit{lifting}, one can remove the asymmetry between the weights and positions of the Diracs, and each hidden unit $\phi$ may be parametrized by a parameter $\theta = (w, v)$, with $\phi(\theta, x)=w \cdot \varphi_v(x) = w\cdot \sigma(v^\top x)$ (where $\sigma$ is an activation function). The main assumptions to ensure global convergence are:
 \begin{itemize}
@@ -406,7 +406,7 @@ Even when $r_0 \ll r$, the weights sometimes converge to a local minimum (see fi
 
 For the sigmoid experiment, we noticed that the initialization of all output layer weights $w$ to 0 brings some separation of the particles at the beginning of training. Roughly half of them get negative weights and the other half positive weights, and this does not change through training.
 
-In our experiment the generative network had 2 hidden units. We always got convergence to the global minimum: all particles are on the black lines, and those that are not have an output weight $w$ vanishing to zero (see the small particles in the middle of figures 2.a and 2.b).
+In our experiment the generative network had 2 hidden units. We always achieved convergence to the global minimum: all particles are on the black lines, and those that are not have an output weight $w$ vanishing to zero (see the small particles in the middle of figures 2.a and 2.b).
 
 
 Global convergence was obtained even with as few as 3 particles. Yet the amount of over-parametrization seems to influence stability during training. When there are many particles, the weights move slower and smoother than with just a few particles (see the difference between figures 2.a and 2.b). This motivates a more careful study of the amount of over-parametrization needed to achieve global convergence in section 5.2.
