@@ -12,7 +12,7 @@
 \BOOKMARK [1][-]{section.4}{An Optimization Problem}{}% 12
 \BOOKMARK [2][-]{subsection.4.1}{The conditional gradient algorithm}{section.4}% 13
 \BOOKMARK [2][-]{subsection.4.2}{The problem with Frank-Wolfe}{section.4}% 14
-\BOOKMARK [2][-]{subsection.4.3}{An Approach using Particle Gradient Flow}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.3}{An approach using particle gradient flow}{section.4}% 15
 \BOOKMARK [1][-]{section.5}{Numerical Experiments}{}% 16
 \BOOKMARK [2][-]{subsection.5.1}{Particle gradient flow in dimension 2}{section.5}% 17
 \BOOKMARK [2][-]{subsection.5.2}{How much over-parametrization is needed?}{section.5}% 18
