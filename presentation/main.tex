@@ -1,0 +1,135 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme.
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{transparent}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\def\Put(#1, #2)#3{\leavevmode\makebox(0, 0){\put(#1, #2){#3}}}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Short title]{On Convex Neural Networks} % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle{Mathematical Foundations of Data Science}
+
+\author{Eloïse BERTHIER \\
+(MVA)}
+
+\date{January 7, 2019} 
+
+\begin{document}
+
+  \begin{frame}
+  \titlepage 
+  \end{frame}
+  
+%\tableofcontents[sectionstyle=show/show, subsectionstyle=show/shaded/hide]
+%  \tableofcontents[sectionstyle=show/show, subsectionstyle=hide]
+
+% !TEX root=../main.tex
+
+\section*{Introduction}
+
+
+\subsection{Layout}
+
+
+\begin{frame}{\subsecname}
+
+
+\Put(0, 100){\includegraphics[width=5cm]{images/nn.png}}
+
+\end{frame}
+
+
+\subsection{Context}
+
+\begin{frame}{\subsecname}
+
+	Aim : \textit{convexity}.
+
+		\vspace{1em}
+	Problems :
+\begin{itemize}
+\item hard
+\item complex
+\end{itemize}
+
+\end{frame}
+
+
+\subsection{Approach}
+
+\begin{frame}{\subsecname}
+
+\begin{enumerate}
+\item Can we?
+\item Should we?
+\end{enumerate}
+
+\end{frame}
+
+
+
+\end{document}
