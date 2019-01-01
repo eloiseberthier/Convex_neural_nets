@@ -44,7 +44,7 @@
 
 \title{On Convex Neural Networks}
 \author{Eloïse Berthier}
-\date{\today}
+\date{December 27, 2018}
 \subtitle{Mathematical Foundations of Data Science}
 
 
@@ -338,7 +338,7 @@ If the support of $\mu_0$ is $r_0 \mathbb{S}^{d+1}$ for some $r_0>0$ and if the 
 
 \begin{proposition}
 \emph{[Sigmoid activations]}
-Assume that the marginal distribution of the input data has finite moments up to order $4$ and that the support of $\mu_0$ is $\{0\} \times \mathbb{R}^{d+1}$. If the Wasserstein gradient flow of $F$ converges to $\mu_\infty$ for $W_2$, then $\mu_\infty$ is a global minimizer of $J$.
+Assume that the marginal distribution of the input data has finite moments up to order $4$ and that the support of $\mu_0$ is $\{0\} \times \mathbb{R}^{d+1}$. If the Wasserstein gradient flow of $J$ converges to $\mu_\infty$ for $W_2$, then $\mu_\infty$ is a global minimizer of $J$.
 \end{proposition}
 
 These results provide strong convergence guarantees, but they apply to an ideal dynamics, with continuous time gradient flow and an infinite number of units. Yet they prescribe a practical method to initialize gradient descent in order to avoid local minima.
